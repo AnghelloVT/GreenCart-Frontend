@@ -4,7 +4,7 @@ import ProductList from './ProductList';
 function App() {
   return (
     <div className="App">
-      <h1>Tienda UTP</h1>
+      <h1 className="text-center mb-4 text-success">Tienda UTP</h1>
       <ProductList />
     </div>
 
