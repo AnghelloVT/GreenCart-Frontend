@@ -1,12 +1,13 @@
 import React from 'react';
-import ProductList from '../components/ProductList';
+import ProductForm from './ProductForm';
+import ProductList from './ProductList'; // solo si ya lo tienes implementado
 
 function VendedorPage() {
     return (
-        <div>
-            <h2>Panel de Vendedor</h2>
-          
-            <ProductList />
+        <div className="container mt-4">
+            <h1 className="mb-3 ">Tienda UTP</h1>
+            <h2 className="mb-4 text-center">Panel de Vendedor</h2>
+            <ProductForm />
         </div>
     );
 }
