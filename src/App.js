@@ -1,17 +1,21 @@
 import React from 'react';
+import { Routes, Route} from 'react-router-dom';
+import Register from './Components/Register';
+import Login from './Components/Login';
 import ProductList from './ProductList';
 import UsuarioList from './UserList';
 import VendedorPage from './VendedorPage';
 
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      
-      <VendedorPage />
-    </div>
+
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Register />} />
+      <Route path="*" element={<ProductList />} />
+    </Routes>
 
   );
 }
-
-export default App;
