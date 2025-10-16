@@ -1,14 +1,15 @@
 import React from 'react';
-import ProductList from './ProductList';
+import { Routes, Route} from 'react-router-dom';
+import Register from './Components/Register';
+import Login from './Components/Login';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <h1 className="text-center mb-4 text-success">Tienda UTP</h1>
-      <ProductList />
-    </div>
-
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Register />} />
+      <Route path="*" element={<h2>Página no encontrada</h2>} />
+    </Routes>
   );
 }
-
-export default App;
