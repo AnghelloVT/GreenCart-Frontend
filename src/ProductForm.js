@@ -50,7 +50,7 @@ function ProductForm() {
 };
 
         try {
-            const response = await fetch('http://localhost:8081/productos/save', {
+            const response = await fetch('http://localhost:8080/productos/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
