@@ -134,8 +134,8 @@ export default function Register() {
           <div>
             <select name="role" value={form.role} onChange={handleChange}>
               <option value="" disabled hidden>Seleccione un rol</option>
-              <option value="comprador">Comprador</option>
-              <option value="vendedor">Vendedor</option>
+              <option value="2">Comprador</option>
+              <option value="1">Vendedor</option>
             </select>
             {errors.role && <small className="error">{errors.role}</small>}
           </div>

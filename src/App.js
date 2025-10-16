@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route} from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
+import ProductList from './ProductList';
 
 export default function App() {
   return (
@@ -9,7 +10,7 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
-      <Route path="*" element={<h2>Página no encontrada</h2>} />
+      <Route path="*" element={<ProductList />} />
     </Routes>
   );
 }

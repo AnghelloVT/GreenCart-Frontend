@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 function ProductList() {
     const [productos, setProductos] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:8081/productos/all")
+        fetch("http://localhost:8080/productos/all")
             .then(res => res.json())
             .then(data => setProductos(data))
             .catch((error) => console.error("Error al cargar productos:", error));
