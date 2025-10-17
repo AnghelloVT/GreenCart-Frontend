@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ProductList from './ProductList';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2';
+
 
 
 function ProductForm() {
@@ -15,8 +17,8 @@ function ProductForm() {
 
     const categories = [
         { categoryId: 1, category: 'Bolsas', active: true },
-        { categoryId: 2, category: 'Zapatos', active: true },
-        { categoryId: 3, category: 'Accesorios', active: true }
+        { categoryId: 2, category: 'Letras', active: true }
+        
     ];
 
      
@@ -36,9 +38,13 @@ function ProductForm() {
         );
 
         if (!selectedCategory) {
-            alert("Categoría inválida");
-            return;
-        }
+        Swal.fire({
+            icon: 'error',
+            title: 'Categoría inválida',
+            text: 'Por favor selecciona una categoría válida.',
+        });
+        return;
+    }
 
        const productToSend = {
    productName: formData.productName,
@@ -50,32 +56,45 @@ function ProductForm() {
 };
 
         try {
-            const response = await fetch('http://localhost:8080/productos/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(productToSend)
-            });
+        const response = await fetch('http://localhost:8080/productos/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(productToSend),
+        });
 
-            if (response.ok) {
-                alert('Producto agregado exitosamente');
-                setFormData({
-                    productName: '',
-                    categoryId: '',
-                    productDescription: '',
-                    productPrice: '',
-                    productStock: '',
-                    active: true
-                });
-            } else {
-                alert('Error al agregar el producto');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al conectar con el servidor');
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Producto agregado exitosamente!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setFormData({
+                productName: '',
+                categoryId: '',
+                productDescription: '',
+                productPrice: '',
+                productStock: '',
+                active: true,
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar el producto',
+                text: 'Intenta nuevamente más tarde.',
+            });
         }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al conectar con el servidor',
+            text: 'Por favor revisa tu conexión.',
+        });
+    }
+};
 
 
     return (
