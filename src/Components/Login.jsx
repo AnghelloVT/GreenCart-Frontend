@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -11,6 +12,7 @@ const MySwal = withReactContent(Swal);
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+     const navigate = useNavigate();
 
     const handleSubmit = () => {
         if (!email.trim() || !password) {
@@ -30,16 +32,27 @@ export default function Login() {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString(),
         })
-            .then(res => res.text())
+            .then(res => res.json()) 
             .then(data => {
-                if (data === 'ok') {
+                if (data.status === 'ok') {
                     MySwal.fire({
                         title: '¡Éxito!',
                         text: 'Has iniciado sesión correctamente',
                         icon: 'success',
                         confirmButtonText: 'Continuar',
                     }).then(() => {
-                        window.location.href = '/productos';
+                       
+                        switch (data.rol) {
+                            case 'administrador':
+                                navigate('/admin');
+                                break;
+                            case 'vendedor':
+                                navigate('/vendedor');
+                                break;
+                            default:
+                                navigate('/productos'); 
+                                break;
+                        }
                     });
                 } else {
                     MySwal.fire({
