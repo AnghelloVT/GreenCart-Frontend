@@ -35,6 +35,15 @@ export default function Login() {
             .then(res => res.json()) 
             .then(data => {
                 if (data.status === 'ok') {
+
+                     const user = {
+                        id: data.id,       
+                        rol: data.rol,
+                        correo: email,
+                    };
+                    localStorage.setItem('user', JSON.stringify(user));
+
+
                     MySwal.fire({
                         title: '¡Éxito!',
                         text: 'Has iniciado sesión correctamente',
