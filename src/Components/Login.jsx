@@ -12,7 +12,7 @@ const MySwal = withReactContent(Swal);
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-     const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
         if (!email.trim() || !password) {
@@ -32,17 +32,20 @@ export default function Login() {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString(),
         })
-            .then(res => res.json()) 
+            .then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-
-                     const user = {
-                        id: data.id,       
-                        rol: data.rol,
-                        correo: email,
+                    // ✅ Guardar solo los datos del usuario
+                    const user = {
+                        id: data.id,
+                        nombre: data.nombre,
+                        apellidos: data.apellidos,
+                        correo: data.correo,
+                        dni: data.dni,
+                        direccion: data.direccion,
+                        telefono: data.telefono
                     };
                     localStorage.setItem('user', JSON.stringify(user));
-
 
                     MySwal.fire({
                         title: '¡Éxito!',
@@ -50,16 +53,18 @@ export default function Login() {
                         icon: 'success',
                         confirmButtonText: 'Continuar',
                     }).then(() => {
-                       
-                        switch (data.rol) {
-                            case 'administrador':
-                                navigate('/admin');
-                                break;
+                        // ✅ Redirigir según rol recibido
+                        const rol = (data.rol || '').toLowerCase();
+
+                        switch (rol) {
                             case 'vendedor':
                                 navigate('/vendedor');
                                 break;
+                            case 'administrador':
+                                navigate('/admin');
+                                break;
                             default:
-                                navigate('/productos'); 
+                                navigate('/productos');
                                 break;
                         }
                     });
@@ -72,14 +77,14 @@ export default function Login() {
                     });
                 }
             })
-            .catch(() =>
+            .catch(() => {
                 MySwal.fire({
                     title: 'Error',
                     text: 'Error al iniciar sesión',
                     icon: 'error',
                     confirmButtonText: 'Cerrar',
-                })
-            );
+                });
+            });
     };
 
     return (
@@ -89,7 +94,7 @@ export default function Login() {
                     <img src={logo} alt="Logo GreenCart" className="logo" />
                 </div>
                 <div className="header-texts">
-                    <h1>!Bienvenido a GreenCart!</h1>
+                    <h1>¡Bienvenido a GreenCart!</h1>
                     <h2>Ingresa tu correo y contraseña para iniciar sesión</h2>
                 </div>
                 <form onSubmit={e => e.preventDefault()} noValidate>
@@ -105,9 +110,13 @@ export default function Login() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button type="button" onClick={handleSubmit} className="btn-login">Ingresar</button>
+                    <button type="button" onClick={handleSubmit} className="btn-login">
+                        Ingresar
+                    </button>
                 </form>
-                <p>¿No tienes una cuenta? <a href="/registro" className="link">Regístrate</a></p>
+                <p>
+                    ¿No tienes una cuenta? <a href="/registro" className="link">Regístrate</a>
+                </p>
             </div>
         </div>
     );
