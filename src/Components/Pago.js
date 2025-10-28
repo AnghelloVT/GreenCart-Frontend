@@ -19,6 +19,7 @@ function Pago() {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     if (storedUser) setUser(storedUser);
     setCarrito(storedCart);
+    console.log("🛍️ Carrito cargado en Pago.js:", storedCart);
   }, []);
 
   const handleChange = (e) => {

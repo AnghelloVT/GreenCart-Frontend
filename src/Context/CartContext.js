@@ -8,24 +8,20 @@ export function CartProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // 🔄 Guardar carrito cuando cambie
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // 🧠 Escuchar cambios en otras pestañas (sincronización en tiempo real)
   useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === "cart") {
         setCart(event.newValue ? JSON.parse(event.newValue) : []);
       }
     };
-
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // ➕ Agregar producto
   const addToCart = (product) => {
     console.log("🟢 Agregando producto:", product);
     setCart((prevCart) => {
@@ -33,33 +29,42 @@ export function CartProvider({ children }) {
       if (existing) {
         return prevCart.map((item) =>
           item.productId === product.productId
-            ? { ...item, quantity: item.quantity + 1, total: (item.quantity + 1) * item.productPrice }
+            ? { 
+                ...item, 
+                quantity: item.quantity + 1, 
+                total: (item.quantity + 1) * (item.productPrice || 0) 
+              }
             : item
         );
       }
-      return [...prevCart, { ...product, quantity: 1, total: product.productPrice }];
+      return [...prevCart, { 
+        ...product, 
+        quantity: 1, 
+        total: product.productPrice || 0 
+      }];
     });
   };
 
-  // ❌ Eliminar producto
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item.productId !== productId));
   };
 
-  // ➖ Disminuir cantidad
   const decreaseQuantity = (productId) => {
     setCart((prevCart) =>
       prevCart
         .map((item) =>
           item.productId === productId
-            ? { ...item, quantity: item.quantity - 1, total: (item.quantity - 1) * item.productPrice }
+            ? { 
+                ...item, 
+                quantity: item.quantity - 1, 
+                total: (item.quantity - 1) * (item.productPrice || 0) 
+              }
             : item
         )
         .filter((item) => item.quantity > 0)
     );
   };
 
-  // 🧹 Vaciar carrito
   const clearCart = () => setCart([]);
 
   return (
