@@ -7,6 +7,7 @@ import VendedorPage from "./Components/VendedorPage";
 import AdminPage from "./Components/AdminPage";
 import Cart from "./Components/Cart";
 import Pago from "./Components/Pago";
+import Resumen from "./Components/Resumen";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Route path="/productos" element={<ProductList />} />
       <Route path="/carrito" element={<Cart />} />
       <Route path="/pago" element={<Pago />} />
+      <Route path="/resumen" element={<Resumen />} />
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/vendedor" element={<VendedorPage />} />
       <Route path="*" element={<ProductList />} />

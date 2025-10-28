@@ -37,7 +37,6 @@ function Pago() {
     }
 
     try {
-      // 1️⃣ Crear Pedido
       const pedidoData = {
         buyerId: parseInt(user.id),
         total: carrito.reduce((acc, item) => acc + (item.total || item.precio * item.cantidad), 0),
@@ -51,17 +50,20 @@ function Pago() {
       });
       const pedido = await pedidoRes.json();
 
-      // 2️⃣ Crear cada Pedido_Item
+      console.log("Pedido creado:", pedido);
+
       for (let item of carrito) {
         const itemData = {
-          pedidoId: pedido.orderId,          // ID del pedido generado
-          productoId: item.id,               // ID del producto
-          usuarioId: item.vendedorId,        // ID del vendedor
-          cantidad: item.cantidad,
-          precioUnitario: item.precio,
-          total: item.total || item.precio * item.cantidad,
-          estado: "PENDIENTE",
+          orderId: pedido.orderId,
+          productId: item.productId,
+          sellerId: item.sellerId,
+          quantity: item.quantity,
+          unitPrice: item.productPrice,
+          total: item.total || item.productPrice * item.quantity,
+          status: "PENDIENTE",
         };
+
+        console.log(itemData);
 
         await fetch("/pedidoitems/save", {
           method: "POST",
@@ -69,11 +71,20 @@ function Pago() {
           body: JSON.stringify(itemData),
         });
       }
+      localStorage.setItem("ultimoPedido", JSON.stringify(pedido));
 
-      // 3️⃣ Limpiar carrito y mostrar confirmación
+      const resumenItems = carrito.map(item => ({
+        productName: item.productName,
+        quantity: item.quantity,
+        unitPrice: item.productPrice,
+        total: item.total || item.productPrice * item.quantity,
+        sellerId: item.sellerId
+      }));
+
+      localStorage.setItem("ultimoPedidoItems", JSON.stringify(resumenItems));
+
       localStorage.removeItem("cart");
-      alert("✅ Pedido guardado correctamente. ¡Gracias por tu compra!");
-      navigate("/productos");
+      navigate("/resumen");
     } catch (error) {
       console.error(error);
       alert("❌ Error al guardar el pedido. Intenta nuevamente.");
@@ -98,6 +109,37 @@ function Pago() {
             </div>
           )}
 
+          {user && carrito.length > 0 && (
+            <div className="mb-4 p-3 border rounded bg-light">
+              <h5 className="fw-bold">🛒 Resumen del Carrito</h5>
+              <table className="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {carrito.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.productName}</td>
+                      <td>{item.quantity}</td>
+                      <td>S/ {item.productPrice.toFixed(2)}</td>
+                      <td>S/ {(item.total || item.productPrice * item.quantity).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan="3" className="text-end fw-bold">Total</td>
+                    <td className="fw-bold">
+                      S/ {carrito.reduce((acc, item) => acc + (item.total || item.productPrice * item.quantity), 0).toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label fw-bold">Nombre en la Tarjeta</label>
