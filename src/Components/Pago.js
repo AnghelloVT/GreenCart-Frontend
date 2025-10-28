@@ -39,9 +39,9 @@ function Pago() {
     try {
       // 1️⃣ Crear Pedido
       const pedidoData = {
-        usuario: { id: user.id },
-        total: carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0),
-        estado: "PENDIENTE",
+        buyerId: parseInt(user.id),
+        total: carrito.reduce((acc, item) => acc + (item.total || item.precio * item.cantidad), 0),
+        status: "PENDIENTE",
       };
 
       const pedidoRes = await fetch("/pedidos/save", {
@@ -54,12 +54,12 @@ function Pago() {
       // 2️⃣ Crear cada Pedido_Item
       for (let item of carrito) {
         const itemData = {
-          pedido: { idPedido: pedido.idPedido },
-          producto: { idProducto: item.id },
-          usuario: { id: item.vendedorId }, // ID del vendedor
+          pedidoId: pedido.orderId,          // ID del pedido generado
+          productoId: item.id,               // ID del producto
+          usuarioId: item.vendedorId,        // ID del vendedor
           cantidad: item.cantidad,
           precioUnitario: item.precio,
-          total: item.precio * item.cantidad,
+          total: item.total || item.precio * item.cantidad,
           estado: "PENDIENTE",
         };
 

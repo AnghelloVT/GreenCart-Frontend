@@ -26,6 +26,7 @@ function Cart() {
                   <th>Precio</th>
                   <th>Cantidad</th>
                   <th>Total</th>
+                  <th>Vendedor</th>
                   <th>Acción</th>
                 </tr>
               </thead>
@@ -53,6 +54,7 @@ function Cart() {
                       </div>
                     </td>
                     <td>S/. {(item.total || 0).toFixed(2)}</td>
+                    <td>{item.sellerId || "N/A"}</td>
                     <td>
                       <button
                         className="btn btn-danger btn-sm"
