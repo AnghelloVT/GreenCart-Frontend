@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductList from './ProductList';
-import UserList from './UserList';
+import UserList from '../UserList';
 
 function AdminPage() {
     return (
