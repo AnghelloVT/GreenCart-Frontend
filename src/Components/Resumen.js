@@ -12,7 +12,7 @@ function Resumen() {
     const storedItems = JSON.parse(localStorage.getItem("ultimoPedidoItems")) || [];
 
     if (!storedPedido) {
-      navigate("/productos"); // si no hay pedido, redirige
+      navigate("/productos"); //si no hay pedido, redirige
       return;
     }
 
