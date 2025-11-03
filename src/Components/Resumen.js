@@ -20,6 +20,34 @@ function Resumen() {
     setItems(storedItems);
   }, [navigate]);
 
+  // Función para descargar el PDF
+  const descargarPDF = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/pedidos/${orderId}/pdf`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/pdf",
+        },
+      });
+
+      if (!response.ok) {
+        alert("Error al generar el PDF");
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Pedido_${orderId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error al descargar PDF:", error);
+    }
+  };
+
   if (!pedido) return null;
 
   return (
@@ -56,6 +84,12 @@ function Resumen() {
 
         <h4 className="text-end mt-3">
           Total: S/ {items.reduce((acc, i) => acc + i.total, 0).toFixed(2)}
+          <button
+            className="btn btn-primary ms-3"
+            onClick={() => descargarPDF(pedido.orderId)}
+          >
+            Descargar PDF
+          </button>
         </h4>
       </div>
     </>
