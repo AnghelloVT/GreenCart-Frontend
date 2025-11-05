@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 
 function Resumen() {
   const navigate = useNavigate();
+  const { orderId } = useParams(); 
   const [pedido, setPedido] = useState(null);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    if (orderId) {
+      // ver pedido guardado desde "MisPedidos"
+      fetch(`http://localhost:8080/pedidos/${orderId}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Error al obtener el pedido");
+          return res.json();
+        })
+        .then(data => {
+          setPedido(data);
+          setItems(data.items || []);
+        })
+        .catch(err => console.error(err));
+    } else {
     const storedPedido = JSON.parse(localStorage.getItem("ultimoPedido"));
     const storedItems = JSON.parse(localStorage.getItem("ultimoPedidoItems")) || [];
 
@@ -18,7 +32,8 @@ function Resumen() {
 
     setPedido(storedPedido);
     setItems(storedItems);
-  }, [navigate]);
+  }
+  }, [orderId, navigate]);
 
   // Función para descargar el PDF
   const descargarPDF = async (orderId) => {

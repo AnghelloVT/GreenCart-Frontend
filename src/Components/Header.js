@@ -14,6 +14,10 @@ export default function Header() {
     navigate("/carrito");
   };
 
+  const goToMisPedidos = () => {
+    navigate("/mis-pedidos"); 
+  };
+
   return (
     <nav className="navbar navbar-light bg-light px-3 shadow-sm d-flex justify-content-between">
       <span className="navbar-text">
@@ -27,6 +31,12 @@ export default function Header() {
               onClick={goToCart}
             >
               🛒 Carrito
+            </button>
+            <button
+              className="btn btn-outline-secondary btn-sm me-2"
+              onClick={goToMisPedidos}
+            >
+              📝 Mis Pedidos
             </button>
             <button
               className="btn btn-outline-danger btn-sm"

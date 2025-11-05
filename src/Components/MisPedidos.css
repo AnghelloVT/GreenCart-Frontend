@@ -1,0 +1,81 @@
+.pedidos-container {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.pedidos-title {
+    color: #1b5e20; /* verde oscuro */
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.no-pedidos-text {
+    text-align: center;
+    color: #555;
+}
+
+.loading-text {
+    text-align: center;
+    margin-top: 50px;
+    font-weight: bold;
+}
+
+.error-text {
+    text-align: center;
+    margin-top: 50px;
+    color: red;
+}
+
+.pedidos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pedido-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e6f4ea; /* verde suave */
+    border-left: 5px solid #28a745; /* borde verde */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pedido-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pedido-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.pedido-btn {
+    padding: 5px 10px;
+    background-color: transparent;
+    border: 1px solid #df1010;
+    color: #e40b0b;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.pedido-btn:hover {
+    background-color: #ad391c;
+    color: white;
+}
+
+.pedido-id {
+    font-weight: bold;
+}
+
+.pedido-total,
+.pedido-fecha {
+    font-size: 0.9rem;
+}

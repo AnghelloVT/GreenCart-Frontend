@@ -8,6 +8,7 @@ import AdminPage from "./Components/AdminPage";
 import Cart from "./Components/Cart";
 import Pago from "./Components/Pago";
 import Resumen from "./Components/Resumen";
+import MisPedidos from "./Components/MisPedidos";
 
 export default function App() {
   return (
@@ -19,8 +20,10 @@ export default function App() {
       <Route path="/carrito" element={<Cart />} />
       <Route path="/pago" element={<Pago />} />
       <Route path="/resumen" element={<Resumen />} />
+      <Route path="/resumen/:orderId" element={<Resumen />} />
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/vendedor" element={<VendedorPage />} />
+      <Route path="/mis-pedidos" element={<MisPedidos />} />
       <Route path="*" element={<ProductList />} />
     </Routes>
   );
