@@ -15,15 +15,20 @@ export default function MisPedidos() {
             return;
         }
 
-        fetch(`http://localhost:8080/pedidos/mis-pedidos/${user.id}`)
-            .then(res => {
-                if (!res.ok) throw new Error("Error al cargar pedidos");
-                return res.json();
-            })
-            .then(data => setPedidos(data))
-            .catch(err => console.error(err))
-            .finally(() => setLoading(false));
-    }, [user]);
+        // Definir endpoint según rol
+    const endpoint = user.rol === "vendedor"
+        ? `http://localhost:8080/pedidos/vendedor/pedidos/${user.id}`
+        : `http://localhost:8080/pedidos/mis-pedidos/${user.id}`;
+
+    fetch(endpoint)
+        .then(res => {
+            if (!res.ok) throw new Error("Error al cargar pedidos");
+            return res.json();
+        })
+        .then(data => setPedidos(data))
+        .catch(err => console.error(err))
+        .finally(() => setLoading(false));
+}, [user]);
 
     const handleDescargarPDF = async (pedidoId) => {
         if (!pedidoId) {

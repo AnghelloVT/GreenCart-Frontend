@@ -43,7 +43,8 @@ export default function Login() {
                         correo: data.correo,
                         dni: data.dni,
                         direccion: data.direccion,
-                        telefono: data.telefono
+                        telefono: data.telefono,
+                        rol: data.rol
                     };
                     localStorage.setItem('user', JSON.stringify(user));
 
