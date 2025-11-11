@@ -8,6 +8,8 @@ import AdminPage from "./Components/AdminPage";
 import Cart from "./Components/Cart";
 import Pago from "./Components/Pago";
 import Resumen from "./Components/Resumen";
+import Reclamos from "./Components/Reclamos";
+
 
 export default function App() {
   return (
@@ -22,6 +24,7 @@ export default function App() {
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/vendedor" element={<VendedorPage />} />
       <Route path="*" element={<ProductList />} />
+      <Route path="/reclamos" element={<Reclamos />} />
     </Routes>
   );
 }

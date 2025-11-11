@@ -27,11 +27,12 @@ export default function Login() {
 
         const params = new URLSearchParams({ correo: email, contraseña: password });
 
-        fetch('/login', {
+        fetch('http://localhost:8080/login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString(),
-        })
+         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+         body: params.toString(),
+         })
+
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
