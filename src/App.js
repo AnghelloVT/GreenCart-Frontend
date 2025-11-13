@@ -9,6 +9,10 @@ import Cart from "./Components/Cart";
 import Pago from "./Components/Pago";
 import Resumen from "./Components/Resumen";
 import Reclamos from "./Components/Reclamos";
+import AdminReclamos from "./Components/AdminReclamos";
+import AdminProductos from "./Components/AdminProductos";
+import AdminUsuarios from "./Components/AdminUsuarios";
+import AdminVentas from "./Components/AdminVentas";
 
 
 export default function App() {
@@ -22,6 +26,10 @@ export default function App() {
       <Route path="/pago" element={<Pago />} />
       <Route path="/resumen" element={<Resumen />} />
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/reclamos" element={<AdminReclamos />} />
+      <Route path="/admin/productos" element={<AdminProductos />} />
+      <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+      <Route path="/admin/ventas" element={<AdminVentas />} />
       <Route path="/vendedor" element={<VendedorPage />} />
       <Route path="*" element={<ProductList />} />
       <Route path="/reclamos" element={<Reclamos />} />

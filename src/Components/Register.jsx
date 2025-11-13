@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import './Register.css';
+import '../Estilos/Register.css';
 import fondo from '../img/fondo.jpg';
 import logo from '../img/logo.jpg';
 

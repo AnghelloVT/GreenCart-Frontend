@@ -1,175 +1,218 @@
 import React, { useState, useEffect } from "react";
+import Header from "./Header";
+import "../Estilos/Reclamos.css";
+import Swal from "sweetalert2";
 
 export default function Reclamos() {
-  const [form, setForm] = useState({
-    nombre: "",
+  const [formData, setFormData] = useState({
+    nombreCompleto: "",
     correo: "",
     dni: "",
     telefono: "",
     direccion: "",
-    fecha: new Date().toISOString().split("T")[0],
+    fechaPedido: "",
     motivo: "",
     detalle: "",
+    aceptaTerminos: false,
   });
 
-  // ✅ Al cargar la página, llenar los campos con los datos del usuario logueado
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        nombre: `${storedUser.nombre} ${storedUser.apellidos || ""}`,
-        correo: storedUser.correo || "",
-        dni: storedUser.dni || "",
-        telefono: storedUser.telefono || "",
-        direccion: storedUser.direccion || "",
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        nombreCompleto: `${user.nombre} ${user.apellidos || ""}`,
+        correo: user.correo || "",
+        dni: user.dni || "",
+        telefono: user.telefono || "",
+        direccion: user.direccion || "",
       }));
     }
   }, []);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
-  // ✅ Envía el reclamo al backend con el id_usuario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.detalle.length > 1000) {
-      alert("El detalle no puede superar los 1000 caracteres.");
+    if (!formData.aceptaTerminos) {
+      Swal.fire({
+        icon: "warning",
+        title: "Terminos y Condiciones",
+        text: "Debe aceptar los términos y condiciones antes de enviar.",
+      });
       return;
     }
 
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const idUsuario = storedUser?.id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      Swal.fire({
+        icon: "error",
+        title: "Usuario no autenticado",
+        text: "Debe iniciar sesión para enviar un reclamo.",
+      });
+      return;
+    }
+
+    const nuevoReclamo = {
+      fechaPedido: formData.fechaPedido,
+      motivoReclamo: formData.motivo,
+      detalle: formData.detalle,
+      usuario: { id: user.id },
+    };
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/reclamos/guardar?idUsuario=${idUsuario}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
+      const res = await fetch("http://localhost:8080/reclamos/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevoReclamo),
+      });
 
-      if (response.ok) {
-        alert("✅ Reclamo enviado correctamente.");
-        setForm({ ...form, motivo: "", detalle: "" });
-      } else {
-        alert("❌ Ocurrió un error al enviar el reclamo.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("❌ Error al conectar con el servidor.");
+      if (!res.ok) throw new Error("Error al enviar el reclamo");
+
+      Swal.fire({
+        icon: "success",
+        title: "Reclamo enviado",
+        text: "Tu reclamo ha sido registrado correctamente.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      setFormData((prev) => ({
+        ...prev,
+        fechaPedido: "",
+        motivo: "",
+        detalle: "",
+        aceptaTerminos: false,
+      }));
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al enviar",
+        text: "No se pudo enviar el reclamo: " + err.message,
+      });
     }
   };
 
   return (
-    <div className="container mt-5 mb-5 p-4 shadow rounded bg-light">
-      <h2 className="text-center text-success mb-4">
-        📖 Libro de Reclamaciones
-      </h2>
+    <>
+      <Header />
+      <div className="reclamo-container">
+        <h2>📢 Formulario de Reclamo</h2>
 
-      <form onSubmit={handleSubmit}>
-        <h5 className="text-success">Identificación del Consumidor</h5>
+        <form className="reclamo-form" onSubmit={handleSubmit}>
+          {/* IDENTIFICACIÓN */}
+          <section className="identificacion">
+            <h3>👤 Identificación del Usuario</h3>
 
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label className="form-label">Nombre y Apellidos</label>
-            <input
-              name="nombre"
-              className="form-control"
-              value={form.nombre}
-              onChange={handleChange}
-              readOnly
-            />
-          </div>
+            <div className="grid-2">
+              <div>
+                <label>Nombre Completo</label>
+                <input type="text" value={formData.nombreCompleto} readOnly />
+              </div>
 
-          <div className="col-md-6 mb-3">
-            <label className="form-label">Correo Electrónico</label>
-            <input
-              name="correo"
-              type="email"
-              className="form-control"
-              value={form.correo}
-              onChange={handleChange}
-              readOnly
-            />
-          </div>
-        </div>
+              <div>
+                <label>Correo Electrónico</label>
+                <input type="email" value={formData.correo} readOnly />
+              </div>
 
-        <div className="row">
-          <div className="col-md-4 mb-3">
-            <label className="form-label">DNI</label>
-            <input
-              name="dni"
-              className="form-control"
-              value={form.dni}
-              onChange={handleChange}
-              readOnly
-            />
-          </div>
+              <div>
+                <label>DNI</label>
+                <input type="text" value={formData.dni} readOnly />
+              </div>
 
-          <div className="col-md-4 mb-3">
-            <label className="form-label">Teléfono</label>
-            <input
-              name="telefono"
-              className="form-control"
-              value={form.telefono}
-              onChange={handleChange}
-              readOnly
-            />
-          </div>
+              <div>
+                <label>Teléfono</label>
+                <input type="text" value={formData.telefono} readOnly />
+              </div>
 
-          <div className="col-md-4 mb-3">
-            <label className="form-label">Dirección</label>
-            <input
-              name="direccion"
-              className="form-control"
-              value={form.direccion}
-              onChange={handleChange}
-              readOnly
-            />
-          </div>
-        </div>
+              <div className="full-width">
+                <label>Dirección</label>
+                <input type="text" value={formData.direccion} readOnly />
+              </div>
+            </div>
+          </section>
 
-        <h5 className="text-success mt-4">Detalle del Reclamo</h5>
+          {/* DETALLE */}
+          <section className="detalle-reclamo">
+            <h3>🧾 Detalle de Reclamación</h3>
 
-        <div className="mb-3">
-          <label className="form-label">Motivo</label>
-          <select
-            name="motivo"
-            className="form-select"
-            value={form.motivo}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecciona una opción</option>
-            <option value="producto">Producto</option>
-            <option value="servicio">Servicio</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
+            <div className="grid-2">
+              <div>
+                <label>Fecha del Pedido</label>
+                <input
+                  type="date"
+                  name="fechaPedido"
+                  value={formData.fechaPedido}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-        <div className="mb-3">
-          <label className="form-label">Detalle (máx. 1000 caracteres)</label>
-          <textarea
-            name="detalle"
-            className="form-control"
-            rows="5"
-            value={form.detalle}
-            onChange={handleChange}
-            maxLength="1000"
-            required
-          ></textarea>
-          <div className="form-text">{form.detalle.length}/1000 caracteres</div>
-        </div>
+              <div>
+                <label>Motivo del Reclamo</label>
+                <select
+                  name="motivo"
+                  value={formData.motivo}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccione un motivo</option>
+                  <option value="Producto defectuoso">Producto defectuoso</option>
+                  <option value="Demora en la entrega">Demora en la entrega</option>
+                  <option value="Pedido incompleto">Pedido incompleto</option>
+                  <option value="Error en el producto recibido">
+                    Error en el producto recibido
+                  </option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
 
-        <button type="submit" className="btn btn-success w-100">
-          Enviar Reclamo
-        </button>
-      </form>
-    </div>
+              <div className="full-width">
+                <label>Detalle del Reclamo</label>
+                <textarea
+                  name="detalle"
+                  value={formData.detalle}
+                  onChange={handleChange}
+                  placeholder="Describe el problema con detalle..."
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Términos */}
+            <div className="terminos">
+              <input
+                type="checkbox"
+                name="aceptaTerminos"
+                checked={formData.aceptaTerminos}
+                onChange={handleChange}
+              />
+              <label>
+                Acepto los{" "}
+                <a href="/terminos" target="_blank" rel="noopener noreferrer">
+                  términos y condiciones
+                </a>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="btn-enviar"
+              disabled={!formData.aceptaTerminos}
+            >
+              Enviar Reclamo
+            </button>
+          </section>
+        </form>
+      </div>
+    </>
   );
 }

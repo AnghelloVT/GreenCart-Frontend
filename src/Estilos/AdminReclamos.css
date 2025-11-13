@@ -1,0 +1,47 @@
+.reclamos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reclamos-table th, .reclamos-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.reclamos-table th {
+  background-color: #050002;
+  color: white;
+  font-weight: bold;
+}
+
+.reclamos-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.reclamos-table tr:hover {
+  background-color: #00c3ff;
+}
+
+.btn-acciones {
+  padding: 8px 12px;
+  background-color: #0099ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-acciones:hover {
+  background-color: #0066ff;
+}
+
+.swal-modal-custom {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.swal2-select {
+  font-size: 16px;
+}
