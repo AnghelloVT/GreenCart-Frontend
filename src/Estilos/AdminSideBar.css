@@ -1,61 +1,85 @@
-.admin-sidebar {
-  width: 220px;
-  height: 100vh;
-  background-color: #1eff00;
-  color: #000000;
+.sidebar {
+  position: fixed;
+  width: 240px;
+  min-height: 100vh;
+  background-color: #212529;
+  padding: 1rem;
+  color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  box-sizing: border-box;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
-.admin-logo {
-  text-align: center;
-  margin-bottom: 30px;
+.sidebar:hover {
+  background-color: #1c1f23;
 }
 
-.admin-user {
-  text-align: center;
-  margin-bottom: 30px;
+.sidebar-logo-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-logo-img {
+  width: 170px;
+  height: auto;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-logo-img:hover {
+  transform: scale(1.05);
+}
+
+.sidebar-welcome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.sidebar-admin-icon {
+  font-size: 1.8rem;
+  color: #0d6efd;
+}
+
+.sidebar-welcome-title {
+  font-size: 0.9rem;
+  color: #adb5bd;
+}
+
+.sidebar-welcome-name {
+  font-size: 1rem;
   font-weight: 600;
 }
 
-.admin-nav button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  background: #0400ff;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: 500;
+.nav-link {
+  color: white !important;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.4rem;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
-  text-align: left;
-  transition: 0.2s;
 }
 
-.admin-nav button:hover {
-  background-color: #5b21b6;
+.nav-link.active,
+.nav-link:hover {
+  background-color: #0d6efd !important;
+  color: white !important;
+  transform: translateX(4px);
 }
 
-.admin-logout {
-  text-align: center;
+.me-2 {
+  margin-right: 0.5rem;
 }
 
-.admin-logout button {
-  width: 100%;
-  padding: 10px;
-  background: #ff0000;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.admin-logout button:hover {
-  background: #c026d3;
+.btn-outline-danger {
+  padding: 0.6rem;
+  border-radius: 0.4rem;
 }
