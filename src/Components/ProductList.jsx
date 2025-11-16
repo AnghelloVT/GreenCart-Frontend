@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../Context/CartContext";
 import Header from "./Header";
+import Footer from "./Footer"
 
 function ProductList() {
   const [productos, setProductos] = useState([]);
@@ -20,7 +21,7 @@ function ProductList() {
       productDescription: p.productDescription,
       productPrice: p.productPrice,
       productImage: p.productImage,
-      sellerId: p.vendedorId, // <- ahora sí se agrega
+      sellerId: p.vendedorId, 
       quantity: 1,
       total: p.productPrice,
     };
@@ -32,7 +33,9 @@ function ProductList() {
     <>
       <Header />
       <div className="container my-5">
-        <h2 className="text-center mb-4 text-success">🛒 Lista de Productos</h2>
+        <h2 className="text-success fw-bold mb-4 text-center">
+          🌱 Productos Ecológicos Disponibles
+        </h2>
         <div className="row">
           {productos.map((p) => (
             <div
@@ -65,9 +68,11 @@ function ProductList() {
                 </div>
               </div>
             </div>
+            
           ))}
         </div>
       </div>
+       <Footer />
     </>
   );
 }

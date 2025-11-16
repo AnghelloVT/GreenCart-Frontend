@@ -9,8 +9,8 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
   const [categories, setCategories] = useState([]);
   const [editFile, setEditFile] = useState(null);
 
-    useEffect(() => {
-    fetch('http://localhost:8080/categorias') 
+  useEffect(() => {
+    fetch('http://localhost:8080/categorias')
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((err) => console.error('Error cargando categorías:', err));
@@ -46,31 +46,33 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
   };
 
   const saveEdit = () => {
-  const formData = new FormData();
-  formData.append("productId", editData.productId);
-  formData.append("productName", editData.productName);
-  formData.append("categoryId", editData.categoryId);
-  formData.append("productDescription", editData.productDescription);
-  formData.append("productPrice", editData.productPrice);
-  formData.append("productStock", editData.productStock);
-  formData.append("active", editData.active);
-  formData.append("vendedorId", JSON.parse(localStorage.getItem('user'))?.id);
+    const formData = new FormData();
+    formData.append("productId", editData.productId);
+    formData.append("productName", editData.productName);
+    formData.append("categoryId", editData.categoryId);
+    formData.append("productDescription", editData.productDescription);
+    formData.append("productPrice", editData.productPrice);
+    formData.append("productStock", editData.productStock);
+    formData.append("active", editData.active);
+    formData.append("vendedorId", JSON.parse(localStorage.getItem('user'))?.id);
 
-  if (editFile) {
-    formData.append("file", editFile); 
-  }
+    if (editFile) {
+      formData.append("file", editFile);
+    }
 
-  onEdit(editData.productId, formData); 
-  setEditId(null);
-};
+    onEdit(editData.productId, formData);
+    setEditId(null);
+  };
 
   const handleFileChange = (e) => {
-  setEditFile(e.target.files[0]);
-};
+    setEditFile(e.target.files[0]);
+  };
 
-   return (
+  return (
     <div className="container my-5">
-      <h2 className="text-center mb-4 text-success">🛒 Mis Productos</h2>
+      <h2 className="text-success fw-bold mb-4 text-center">
+        🌱 Mis Productos Ecológicos
+      </h2>
       <div className="row">
         {products.length === 0 && <p className="text-center">No tienes productos aún.</p>}
         {products.map((p) => (
@@ -108,7 +110,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
         ))}
       </div>
 
-      
+
       <div
         className="modal fade"
         id="editProductModal"
@@ -183,10 +185,10 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
               </div>
 
               <div className="mb-3">
-      <label>Imagen (opcional):</label>
-        <input type="file" onChange={handleFileChange} className="form-control" />
-        </div>
-        
+                <label>Imagen (opcional):</label>
+                <input type="file" onChange={handleFileChange} className="form-control" />
+              </div>
+
               <div className="form-check mb-3">
                 <input
                   type="checkbox"
