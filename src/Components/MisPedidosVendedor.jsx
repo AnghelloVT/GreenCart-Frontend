@@ -14,14 +14,14 @@ export default function MisPedidosVendedor() {
             return;
         }
 
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token"); // si tu backend requiere auth
         const endpoint = `http://localhost:8080/pedidos/vendedor/pedidos/${user.id}`;
 
         fetch(endpoint, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}` // quitar si no se requiere
             }
         })
             .then(res => res.json())
@@ -39,6 +39,34 @@ export default function MisPedidosVendedor() {
             a.href = url;
             a.download = `Pedido_${pedidoId}.pdf`;
             a.click();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleUpdateStatus = async (itemId, newStatus) => {
+        try {
+            const token = localStorage.getItem("token"); // si tu backend requiere auth
+            const response = await fetch(`http://localhost:8080/pedidoitems/${itemId}/status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // quitar si no se requiere
+                },
+                body: JSON.stringify({ status: newStatus }) // enviar como objeto
+            });
+
+            if (!response.ok) throw new Error("Error al actualizar el estado");
+
+            // Actualizar estado local inmediatamente
+            setPedidos(prevPedidos =>
+                prevPedidos.map(pedido => ({
+                    ...pedido,
+                    items: pedido.items.map(item =>
+                        item.itemId === itemId ? { ...item, status: newStatus } : item
+                    )
+                }))
+            );
         } catch (error) {
             console.error(error);
         }
@@ -66,17 +94,13 @@ export default function MisPedidosVendedor() {
                                 (item) => item.sellerId === Number(user.id)
                             );
 
-                            // Total solo de este vendedor
                             const totalVendedor = itemsVendedor.reduce(
                                 (sum, item) => sum + item.unitPrice * item.quantity,
                                 0
                             );
 
                             return (
-                                <div
-                                    key={pedido.orderId}
-                                    className="pedido-card"
-                                >
+                                <div key={pedido.orderId} className="pedido-card">
                                     <div
                                         className="pedido-header"
                                         onClick={() => toggleExpand(pedido.orderId)}
@@ -84,7 +108,7 @@ export default function MisPedidosVendedor() {
                                         <div>
                                             <span className="pedido-id">Boleta N°: {pedido.orderId}</span>
                                             <span className="pedido-date">
-                                                {new Date(pedido.date).toLocaleDateString()} -
+                                                {new Date(pedido.date).toLocaleDateString()} -{" "}
                                                 {new Date(pedido.date).toLocaleTimeString()}
                                             </span>
                                         </div>
@@ -101,6 +125,19 @@ export default function MisPedidosVendedor() {
                                                     <p><strong>Producto:</strong> {item.productName}</p>
                                                     <p><strong>Cantidad:</strong> {item.quantity}</p>
                                                     <p><strong>Precio:</strong> S/ {item.unitPrice}</p>
+                                                    <p><strong>Estado:</strong> {item.status}</p>
+
+                                                    {item.status === "PENDIENTE" && (
+                                                        <button
+                                                            className="btn-status"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleUpdateStatus(item.itemId, "EN_PROCESO");
+                                                            }}
+                                                        >
+                                                            Marcar como EN_PROCESO
+                                                        </button>
+                                                    )}
                                                 </div>
                                             ))}
 

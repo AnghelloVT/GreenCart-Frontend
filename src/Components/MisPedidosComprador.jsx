@@ -52,28 +52,29 @@ export default function MisPedidosComprador() {
                 ) : (
                     <div className="pedidos-list">
                         {pedidos.map((pedido) => (
-                            <div className="pedido-row" key={pedido.orderId}>
-                                <div className="pedido-info">
-                                    <span className="pedido-id">Codigo de pedido #{pedido.orderId}</span>
-                                    <span className="pedido-total">
-                                        Total: S/ {pedido.total} |{" "}
-                                        {pedido.date && (
-                                            <>
-                                                {new Date(pedido.date).toLocaleDateString()}{" "}
-                                                {new Date(pedido.date).toLocaleTimeString()}
-                                            </>
-                                        )}
-                                    </span>
+                            <div className="pedido-card" key={pedido.orderId}>
+                                <div className="pedido-header">
+                                    <div>
+                                        <span className="pedido-id">Codigo de pedido #{pedido.orderId}</span>
+                                        <span className="pedido-date">
+                                            {pedido.date &&
+                                                `${new Date(pedido.date).toLocaleDateString()} ${new Date(
+                                                    pedido.date
+                                                ).toLocaleTimeString()}`}
+                                        </span>
+                                    </div>
+                                    <span className="pedido-total">Total: S/ {pedido.total}</span>
                                 </div>
-                                <div className="pedido-buttons">
+
+                                <div className="pedido-details">
                                     <button
-                                        className="pedido-btn btn-ver"
+                                        className="btn-pdf"
                                         onClick={() => navigate(`/resumen/${pedido.orderId}`)}
                                     >
                                         Ver detalles
                                     </button>
                                     <button
-                                        className="pedido-btn btn-pdf"
+                                        className="btn-pdf"
                                         onClick={() => handleDescargarPDF(pedido.orderId)}
                                     >
                                         Descargar PDF
@@ -81,6 +82,7 @@ export default function MisPedidosComprador() {
                                 </div>
                             </div>
                         ))}
+
                     </div>
                 )}
             </div>
