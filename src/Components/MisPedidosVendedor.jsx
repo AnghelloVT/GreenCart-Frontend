@@ -30,17 +30,26 @@ export default function MisPedidosVendedor() {
             .finally(() => setLoading(false));
     }, [user]);
 
-    const handleDescargarPDF = async (pedidoId) => {
+    const handleDescargarExcel = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/pdf`);
+            const response = await fetch(`http://localhost:8080/pedidoitems/seller/${user.id}/excel`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}` // opcional
+                }
+            });
+            if (!response.ok) throw new Error("Error al generar Excel");
+
             const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `Pedido_${pedidoId}.pdf`;
+            a.download = `Productos_Vendedor_${user.id}.xlsx`;
             a.click();
+            a.remove();
         } catch (error) {
             console.error(error);
+            alert("No se pudo descargar el Excel");
         }
     };
 
@@ -84,7 +93,11 @@ export default function MisPedidosVendedor() {
 
             <div className="pedidos-container">
                 <h3 className="pedidos-title">📝 Mis pedidos como vendedor</h3>
-
+<div style={{ textAlign: "center", marginBottom: "20px" }}>
+    <button className="btn-pdf" onClick={handleDescargarExcel}>
+        Descargar Excel de todos los productos
+    </button>
+</div>
                 {pedidos.length === 0 ? (
                     <p className="no-pedidos-text">No tienes pedidos registrados.</p>
                 ) : (
@@ -129,7 +142,7 @@ export default function MisPedidosVendedor() {
 
                                                     {item.status === "PENDIENTE" && (
                                                         <button
-                                                            className="btn-status"
+                                                            className="btn-pdf"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleUpdateStatus(item.itemId, "EN_PROCESO");
@@ -140,16 +153,7 @@ export default function MisPedidosVendedor() {
                                                     )}
                                                 </div>
                                             ))}
-
-                                            <button
-                                                className="btn-pdf"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleDescargarPDF(pedido.orderId);
-                                                }}
-                                            >
-                                                Descargar PDF
-                                            </button>
+                                            
                                         </div>
                                     )}
                                 </div>
