@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import './Login.css';
+import '../Estilos/Login.css';
 import fondo from '../img/fondo.jpg';
 import logo from '../img/logo.jpg';
 
@@ -27,11 +27,12 @@ export default function Login() {
 
         const params = new URLSearchParams({ correo: email, contraseña: password });
 
-        fetch('/login', {
+        fetch('http://localhost:8080/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString(),
         })
+
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
@@ -61,7 +62,7 @@ export default function Login() {
                             case 'vendedor':
                                 navigate('/vendedor');
                                 break;
-                            case 'administrador':
+                            case 'admin':
                                 navigate('/admin');
                                 break;
                             default:
