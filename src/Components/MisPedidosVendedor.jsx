@@ -15,7 +15,7 @@ export default function MisPedidosVendedor() {
         }
 
         const token = localStorage.getItem("token"); // si tu backend requiere auth
-        const endpoint = `http://localhost:8080/pedidos/vendedor/pedidos/${user.id}`;
+        const endpoint = `http://localhost:8080/pedidos/seller/${user.id}`;
 
         fetch(endpoint, {
             method: "GET",

@@ -22,6 +22,36 @@ export default function MisPedidosComprador() {
             .finally(() => setLoading(false));
     }, [user]);
 
+    const handleCancelarPedido = async (pedidoId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/cancelar`, {
+                method: "POST",
+            });
+            if (!response.ok) throw new Error("No se pudo cancelar el pedido");
+            alert("Pedido cancelado correctamente");
+            // Actualizar la lista de pedidos
+            setPedidos(pedidos.map(p => p.orderId === pedidoId ? { ...p, estado: "CANCELADO" } : p));
+        } catch (error) {
+            console.error(error);
+            alert("Error al cancelar el pedido");
+        }
+    };
+
+    const handleEntregarPedido = async (pedidoId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/entregar`, {
+                method: "POST",
+            });
+            if (!response.ok) throw new Error("No se pudo marcar como entregado");
+            alert("Pedido marcado como entregado");
+            setPedidos(pedidos.map(p => p.orderId === pedidoId ? { ...p, estado: "ENTREGADO" } : p));
+        } catch (error) {
+            console.error(error);
+            alert("Error al actualizar el pedido");
+        }
+    };
+
+
     const handleDescargarPDF = async (pedidoId) => {
         try {
             const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/pdf`);
@@ -67,6 +97,17 @@ export default function MisPedidosComprador() {
                                 </div>
 
                                 <div className="pedido-details">
+                                    {pedido.status === "PENDIENTE" && (
+                                        <button className="btn-pdf" onClick={() => handleCancelarPedido(pedido.orderId)}>
+                                            Cancelar pedido
+                                        </button>
+                                    )}
+
+                                    {pedido.status === "EN_PROCESO" && (
+                                        <button className="btn-pdf" onClick={() => handleEntregarPedido(pedido.orderId)}>
+                                            Marcar como entregado
+                                        </button>
+                                    )}
                                     <button
                                         className="btn-pdf"
                                         onClick={() => navigate(`/resumen/${pedido.orderId}`)}
