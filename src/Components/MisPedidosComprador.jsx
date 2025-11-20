@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
-import "./MisPedidos.css";
+import '../Estilos/MisPedidos.css';
 
 export default function MisPedidosComprador() {
     const [pedidos, setPedidos] = useState([]);

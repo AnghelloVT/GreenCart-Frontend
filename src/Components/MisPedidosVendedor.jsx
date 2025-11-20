@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import "./MisPedidos.css";
+import '../Estilos/MisPedidos.css';
 
 export default function MisPedidosVendedor() {
     const [pedidos, setPedidos] = useState([]);
