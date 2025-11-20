@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductForm from './ProductForm';
 import ProductListVendedor from './ProductListVendedor';
 import Swal from 'sweetalert2';
-import Header from "./Header";
+import HeaderVendedor from "./HeaderVendedor";
 
 function VendedorPage() {
   const [showForm, setShowForm] = useState(false);
@@ -80,7 +80,7 @@ function VendedorPage() {
 
 
   return (
-    <><Header />
+    <><HeaderVendedor/>
     <div className="container my-5">
       <div className="d-flex justify-content-center gap-2 mb-4">
         <button
