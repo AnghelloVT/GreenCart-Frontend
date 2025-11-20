@@ -8,6 +8,7 @@ import AdminPage from "./Components/AdminPage";
 import Cart from "./Components/Cart";
 import Pago from "./Components/Pago";
 import Resumen from "./Components/Resumen";
+import MisPedidos from "./Components/MisPedidos";
 import Reclamos from "./Components/Reclamos";
 import AdminReclamos from "./Components/AdminReclamos";
 import AdminProductos from "./Components/AdminProductos";
@@ -25,12 +26,14 @@ export default function App() {
       <Route path="/carrito" element={<Cart />} />
       <Route path="/pago" element={<Pago />} />
       <Route path="/resumen" element={<Resumen />} />
+      <Route path="/resumen/:orderId" element={<Resumen />} />
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/admin/reclamos" element={<AdminReclamos />} />
       <Route path="/admin/productos" element={<AdminProductos />} />
       <Route path="/admin/usuarios" element={<AdminUsuarios />} />
       <Route path="/admin/ventas" element={<AdminVentas />} />
       <Route path="/vendedor" element={<VendedorPage />} />
+      <Route path="/mis-pedidos" element={<MisPedidos />} />
       <Route path="*" element={<ProductList />} />
       <Route path="/reclamos" element={<Reclamos />} />
     </Routes>

@@ -29,6 +29,10 @@ export default function Header() {
       ? `${user.nombre ?? user.firstName ?? ""} ${user.apellidos ?? user.lastName ?? ""}`.trim()
       : "Invitado";
 
+  const goToMisPedidos = () => {
+    navigate("/mis-pedidos"); 
+  };
+
   return (
     <nav className="navbar navbar-light bg-light px-3 shadow-sm">
       <div className="container-fluid d-flex align-items-center">
@@ -43,9 +47,17 @@ export default function Header() {
         {/* Centro: Carrito */}
         <div className="flex-grow-1 text-center">
           {user && (
+            <>
             <button className="btn btn-outline-primary btn-sm" onClick={goToCart}>
               🛒 Carrito
             </button>
+            <button
+              className="btn btn-outline-secondary btn-sm me-2"
+              onClick={goToMisPedidos}
+            >
+              📝 Mis Pedidos
+            </button>
+            </>
           )}
         </div>
 
