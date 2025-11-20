@@ -19,7 +19,9 @@ export default function Header() {
 
   const nombre =
     user
-      ? `${user.nombre ?? user.firstName ?? ""} ${user.apellidos ?? user.lastName ?? ""}`.trim()
+      ? `${user.nombre ?? user.firstName ?? ""} ${
+          user.apellidos ?? user.lastName ?? ""
+        }`.trim()
       : "Invitado";
 
   const logout = () => {
@@ -28,28 +30,29 @@ export default function Header() {
     navigate("/login");
   };
 
+  // 🔹 Funciones de navegación
+  const goToCart = () => navigate("/carrito");
+  const goToProductos = () => navigate("/productos");
+  const goToReclamos = () => navigate("/reclamos");
+  const goToMisPedidos = () => navigate("/mis-pedidos");
+
   return (
     <header style={styles.header}>
-      {/* IZQUIERDA: LOGO + PRODUCTOS + CARRITO */}
+      {/* IZQUIERDA */}
       <div style={styles.leftSection}>
-        {/* LOGO */}
         <h1 style={styles.title}>
           Green<span style={{ color: "#a5d6a7" }}>Cart</span>
         </h1>
 
-        {/* PRODUCTOS */}
         {user && (
-          <button
-            style={styles.linkBtn}
-            onClick={() => navigate("/productos")}
-          >
+          <button style={styles.linkBtn} onClick={goToProductos}>
             Productos
           </button>
         )}
 
-        {/* CARRITO NEGRO */}
+        {/* CARRITO */}
         {user && (
-          <div style={styles.cartWrapper} onClick={() => navigate("/carrito")}>
+          <div style={styles.cartWrapper} onClick={goToCart}>
             <FaShoppingCart size={22} style={{ color: "black" }} />
 
             {cart.length > 0 && (
@@ -57,76 +60,50 @@ export default function Header() {
             )}
           </div>
         )}
-  const goToMisPedidos = () => {
-    navigate("/mis-pedidos"); 
-  };
-
-  return (
-    <nav className="navbar navbar-light bg-light px-3 shadow-sm">
-      <div className="container-fluid d-flex align-items-center">
-
-        {/* Izquierda: Logo + Bienvenida */}
-        <div className="d-flex align-items-center gap-2">
-          {/* Ajusta la ruta del logo si es necesario */}
-          <img src="/images/logo192.png" alt="GreenCart" style={{ width: 40, height: 40 }} />
-          <span className="navbar-text">👋 Bienvenido {nombreCompleto || "Invitado"}</span>
-        </div>
-
-        {/* Centro: Carrito */}
-        <div className="flex-grow-1 text-center">
-          {user && (
-            <>
-            <button className="btn btn-outline-primary btn-sm" onClick={goToCart}>
-              🛒 Carrito
-            </button>
-            <button
-              className="btn btn-outline-secondary btn-sm me-2"
-              onClick={goToMisPedidos}
-            >
-              📝 Mis Pedidos
-            </button>
-            </>
-          )}
-        </div>
-
-        {/* Derecha: Productos / Reclamos / Cerrar sesión */}
-        <div className="d-flex align-items-center gap-2">
-          {user && (
-            <>
-              <button className="btn btn-outline-success btn-sm" onClick={goToProductos}>
-                Productos
-              </button>
-              <button className="btn btn-outline-secondary btn-sm" onClick={goToReclamos}>
-                Reclamos
-              </button>
-              <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
-      {/* DERECHA: BIENVENIDO + LOGOUT OR LOGIN */}
-      <nav style={styles.rightSection}>
+      {/* DERECHA */}
+      <div style={styles.rightSection}>
         {!user ? (
           <>
-            <a href="/login" style={styles.buttonLink}>Iniciar Sesión</a>
-            <a href="/registro" style={styles.buttonLink}>Registrarse</a>
+            <a href="/login" style={styles.buttonLink}>
+              Iniciar Sesión
+            </a>
+            <a href="/registro" style={styles.buttonLink}>
+              Registrarse
+            </a>
           </>
         ) : (
           <>
             <span style={styles.welcome}>Bienvenido, {nombre}</span>
-            <button onClick={logout} style={styles.logoutBtn}>
+
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={goToMisPedidos}
+            >
+              📝 Mis Pedidos
+            </button>
+
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={goToReclamos}
+            >
+              Reclamos
+            </button>
+
+            <button style={styles.logoutBtn} onClick={logout}>
               Cerrar Sesión
             </button>
           </>
         )}
-      </nav>
+      </div>
     </header>
   );
 }
 
+// ========================
+// ESTILOS
+// ========================
 const styles = {
   header: {
     padding: "1rem 2rem",
@@ -141,7 +118,6 @@ const styles = {
     zIndex: 100,
   },
 
-  /** IZQUIERDA **/
   leftSection: {
     display: "flex",
     alignItems: "center",
@@ -152,7 +128,6 @@ const styles = {
     margin: 0,
     fontSize: "2.2rem",
     fontWeight: "bold",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
   },
 
   linkBtn: {
@@ -160,12 +135,9 @@ const styles = {
     color: "black",
     borderRadius: "20px",
     padding: "0.4rem 1.1rem",
-    textDecoration: "none",
     fontWeight: "600",
-    fontSize: "1rem",
     border: "none",
     cursor: "pointer",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
   },
 
   cartWrapper: {
@@ -185,16 +157,10 @@ const styles = {
     fontWeight: "bold",
   },
 
-  /** DERECHA **/
   rightSection: {
     display: "flex",
     alignItems: "center",
     gap: "1rem",
-  },
-
-  welcome: {
-    fontWeight: "600",
-    fontSize: "1.1rem",
   },
 
   buttonLink: {
@@ -202,9 +168,13 @@ const styles = {
     color: "black",
     borderRadius: "20px",
     padding: "0.5rem 1.25rem",
-    textDecoration: "none",
     fontWeight: "600",
-    boxShadow: "0 4px 8px rgba(102,187,106,0.4)",
+    textDecoration: "none",
+  },
+
+  welcome: {
+    fontWeight: "600",
+    fontSize: "1.1rem",
   },
 
   logoutBtn: {
@@ -215,6 +185,5 @@ const styles = {
     fontWeight: "600",
     borderRadius: "20px",
     color: "white",
-    boxShadow: "0 4px 8px rgba(129,199,132,0.5)",
   },
 };
