@@ -29,9 +29,9 @@ export default function Login() {
 
         fetch('http://localhost:8080/login', {
             method: 'POST',
-         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-         body: params.toString(),
-         })
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString(),
+        })
 
             .then(res => res.json())
             .then(data => {
@@ -44,7 +44,8 @@ export default function Login() {
                         correo: data.correo,
                         dni: data.dni,
                         direccion: data.direccion,
-                        telefono: data.telefono
+                        telefono: data.telefono,
+                        rol: data.rol
                     };
                     localStorage.setItem('user', JSON.stringify(user));
 

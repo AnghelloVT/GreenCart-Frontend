@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 
 function Resumen() {
   const navigate = useNavigate();
+  const { orderId } = useParams(); 
   const [pedido, setPedido] = useState(null);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    if (orderId) {
+      // ver pedido guardado desde "MisPedidos"
+      fetch(`http://localhost:8080/pedidos/${orderId}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Error al obtener el pedido");
+          return res.json();
+        })
+        .then(data => {
+          setPedido(data);
+          setItems(data.items || []);
+        })
+        .catch(err => console.error(err));
+    } else {
     const storedPedido = JSON.parse(localStorage.getItem("ultimoPedido"));
     const storedItems = JSON.parse(localStorage.getItem("ultimoPedidoItems")) || [];
 
@@ -18,7 +32,36 @@ function Resumen() {
 
     setPedido(storedPedido);
     setItems(storedItems);
-  }, [navigate]);
+  }
+  }, [orderId, navigate]);
+
+  // Función para descargar el PDF
+  const descargarPDF = async (orderId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/pedidos/${orderId}/pdf`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/pdf",
+        },
+      });
+
+      if (!response.ok) {
+        alert("Error al generar el PDF");
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Pedido_${orderId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error al descargar PDF:", error);
+    }
+  };
 
   if (!pedido) return null;
 
@@ -56,6 +99,12 @@ function Resumen() {
 
         <h4 className="text-end mt-3">
           Total: S/ {items.reduce((acc, i) => acc + i.total, 0).toFixed(2)}
+          <button
+            className="btn btn-primary ms-3"
+            onClick={() => descargarPDF(pedido.orderId)}
+          >
+            Descargar PDF
+          </button>
         </h4>
       </div>
     </>

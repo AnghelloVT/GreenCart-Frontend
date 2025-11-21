@@ -30,8 +30,7 @@ export default function Header() {
   };
 
   // 🔹 Funciones de navegación
-  const goToCart = () => navigate("/carrito");
-  const goToProductos = () => navigate("/productos");
+  const goToProductos = () => navigate("/vendedor");
   const goToMisPedidos = () => navigate("/mis-pedidos");
 
   return (
@@ -46,17 +45,6 @@ export default function Header() {
           <button style={styles.linkBtn} onClick={goToProductos}>
             Productos
           </button>
-        )}
-
-        {/* CARRITO */}
-        {user && (
-          <div style={styles.cartWrapper} onClick={goToCart}>
-            <FaShoppingCart size={22} style={{ color: "black" }} />
-
-            {cart.length > 0 && (
-              <span style={styles.cartCount}>{cart.length}</span>
-            )}
-          </div>
         )}
       </div>
 
@@ -83,8 +71,6 @@ export default function Header() {
             >
               📝 Mis Pedidos
             </button>
-
-
 
             <button style={styles.logoutBtn} onClick={logout}>
               Cerrar Sesión

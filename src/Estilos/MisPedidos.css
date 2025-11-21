@@ -1,0 +1,108 @@
+/* Fondo general */
+body {
+    background-color: #f5f6fa;
+}
+
+/* Contenedor principal */
+.pedidos-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 10px;
+}
+
+/* Título */
+.pedidos-title {
+    text-align: center;
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Texto sin pedidos */
+.no-pedidos-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #777;
+}
+
+/* Cada pedido */
+.pedido-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    margin-bottom: 15px;
+    transition: transform 0.15s ease;
+    border: 1px solid #eee;
+}
+
+.pedido-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Cabecera */
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.pedido-id {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.pedido-date {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 3px;
+}
+
+.pedido-total {
+    font-size: 1.1rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Detalles al expandir */
+.pedido-details {
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}
+
+.pedido-item {
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    margin-bottom: 10px;
+}
+
+/* Botón PDF */
+.btn-pdf {
+    padding: 10px 16px;
+    margin-top: 10px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-pdf:hover {
+    background: #2980b9;
+}
+
+/* Loading */
+.loading-text {
+    text-align: center;
+    margin-top: 50px;
+    color: #555;
+    font-size: 1.2rem;
+}
