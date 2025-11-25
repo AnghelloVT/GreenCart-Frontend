@@ -27,7 +27,7 @@ export default function Login() {
 
         const params = new URLSearchParams({ correo: email, contraseña: password });
 
-        fetch('http://localhost:8080/login', {
+        fetch('http://localhost:8080/usuarios/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString(),

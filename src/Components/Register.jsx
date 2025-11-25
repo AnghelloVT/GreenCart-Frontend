@@ -58,7 +58,7 @@ export default function Register() {
       rol: form.role,
     };
 
-    fetch('/registro', {
+    fetch('/usuarios/registro', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(cliente),
