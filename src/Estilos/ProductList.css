@@ -1,0 +1,16 @@
+.product-image {
+  width: 100%;
+  height: 350px; 
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+body, #root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+}

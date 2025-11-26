@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "../Context/CartContext";
 import Header from "./Header";
 import Footer from "./Footer"
+import "../Estilos/ProductList.css";
 
 function ProductList() {
   const [productos, setProductos] = useState([]);
@@ -44,9 +45,9 @@ function ProductList() {
             >
               <div className="card h-100 shadow-sm border-0">
                 <img
-                  src={`/uploads/${p.productImage}`}
-                  className="card-img-top"
-                  alt={p.productName}
+             src={`/uploads/${p.productImage}`}
+             className="card-img-top product-image"
+             alt={p.productName}
                 />
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title text-dark">{p.productName}</h5>

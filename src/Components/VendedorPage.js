@@ -4,6 +4,7 @@ import ProductListVendedor from './ProductListVendedor';
 import Swal from 'sweetalert2';
 import HeaderVendedor from "./HeaderVendedor";
 
+
 function VendedorPage() {
   const [showForm, setShowForm] = useState(false);
   const [showList, setShowList] = useState(false);

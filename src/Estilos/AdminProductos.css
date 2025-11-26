@@ -1,0 +1,167 @@
+/* TABLA */
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.usuarios-table th {
+  padding: 12px;
+  border-bottom: 2px solid #ccc;
+  text-align: left;
+  background-color: #f4f4f4;
+}
+
+.usuarios-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.usuarios-table tr {
+  background-color: #fff;
+}
+
+/* BOTONES EDITAR Y ELIMINAR */
+.btn-edit {
+  background-color: #0275d8;
+  color: white;
+  padding: 6px 12px;
+  margin-right: 6px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.btn-edit:hover {
+  background-color: #025aa5;
+}
+
+.btn-delete {
+  background-color: #d9534f;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.btn-delete:hover {
+  background-color: #c9302c;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  width: 360px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content input {
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  outline: none;
+}
+
+.modal-content input:focus {
+  border-color: #28a745;
+  box-shadow: 0px 0px 4px rgba(40, 167, 69, 0.4);
+}
+
+.btn-save {
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #218838;
+}
+
+.btn-cancel {
+  background: gray;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: #505050;
+}
+
+.filtros-usuarios {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.filtros-usuarios input {
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.filtros-usuarios input:focus {
+  border-color: #28a745;
+  box-shadow: 0px 0px 4px rgba(40, 167, 69, 0.4);
+}
+
+/* BOTÓN GENERAL */
+.btn-buscar,
+.btn-listar {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+/* BOTÓN BUSCAR (verde suave) */
+.btn-buscar {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btn-buscar:hover {
+  background-color: #27ae60;
+}
+
+/* BOTÓN LISTAR (azul suave) */
+.btn-listar {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-listar:hover {
+  background-color: #2980b9;
+}
