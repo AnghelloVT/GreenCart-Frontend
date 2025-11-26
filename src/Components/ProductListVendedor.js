@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
+
 function ProductListVendedor({ products, onDelete, onEdit }) {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
