@@ -70,6 +70,20 @@ function Pago() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(itemData),
         });
+        
+        const productRes = await fetch(`http://localhost:8080/productos/${item.productId}`);
+        const productActual = await productRes.json();
+
+        const stockUpdate = {
+          productId: item.productId,
+          productStock: productActual.productStock - item.quantity,
+        };
+
+        await fetch(`http://localhost:8080/productos/actualizar-stock/${item.productId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(stockUpdate),
+        });
       }
       localStorage.setItem("ultimoPedido", JSON.stringify(pedido));
 
