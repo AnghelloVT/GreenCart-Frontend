@@ -22,21 +22,34 @@ export function CartProvider({ children }) {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const addToCart = (product) => {
-    console.log("🟢 Agregando producto:", product);
-    setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.productId === product.productId);
-      if (existing) {
-        return prevCart.map((item) =>
-          item.productId === product.productId
-            ? { 
-                ...item, 
-                quantity: item.quantity + 1, 
-                total: (item.quantity + 1) * (item.productPrice || 0) 
-              }
-            : item
-        );
+  const addToCart = async (product) => {
+  // Traer stock real desde backend
+  const res = await fetch(`http://localhost:8080/productos/${product.productId}`);
+  const productActual = await res.json();
+
+  setCart((prevCart) => {
+    const existing = prevCart.find((item) => item.productId === product.productId);
+
+    if (existing) {
+      if (existing.quantity + 1 > productActual.productStock) {
+        alert(`❌ No puedes agregar más de ${product.productName}. Stock disponible: ${productActual.productStock}`);
+        return prevCart; // no agrega
       }
+      return prevCart.map((item) =>
+        item.productId === product.productId
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+              total: (item.quantity + 1) * (item.productPrice || 0)
+            }
+          : item
+      );
+    }
+
+    if (productActual.productStock < 1) {
+      alert(`❌ ${product.productName} está agotado`);
+      return prevCart;
+    }
       return [...prevCart, { 
         ...product, 
         quantity: 1, 
