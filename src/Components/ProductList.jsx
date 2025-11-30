@@ -9,7 +9,7 @@ function ProductList() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch("http://localhost:8080/productos/all")
+    fetch("https://greencart-backend-085d.onrender.com/productos/all")
       .then((res) => res.json())
       .then((data) => setProductos(data))
       .catch((error) => console.error("Error al cargar productos:", error));

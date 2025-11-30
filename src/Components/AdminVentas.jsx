@@ -22,7 +22,7 @@ export default function AdminVentas() {
   const fetchVentas = useCallback(async () => {
     setCargando(true);
     try {
-      const res = await fetch("http://localhost:8080/pedidos/all");
+      const res = await fetch("https://greencart-backend-085d.onrender.com/pedidos/all");
       if (!res.ok) throw new Error("Error al cargar las ventas");
       const data = await res.json();
       setVentas(data.map(normalizarVenta));
@@ -38,7 +38,7 @@ export default function AdminVentas() {
     if (!idBuscar) return;
     setCargando(true);
     try {
-      const res = await fetch(`http://localhost:8080/pedidos/${idBuscar}`);
+      const res = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/${idBuscar}`);
       if (!res.ok) throw new Error("Venta no encontrada");
       const data = await res.json();
       setVentas([normalizarVenta(data)]);
@@ -53,7 +53,7 @@ export default function AdminVentas() {
     if (!correoBuscar) return;
     setCargando(true);
     try {
-      const res = await fetch(`http://localhost:8080/pedidos/all`);
+      const res = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/all`);
       if (!res.ok) throw new Error("Error al buscar ventas");
       const data = await res.json();
       const filtradas = data

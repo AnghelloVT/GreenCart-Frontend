@@ -71,7 +71,7 @@ function Pago() {
           body: JSON.stringify(itemData),
         });
         
-        const productRes = await fetch(`http://localhost:8080/productos/${item.productId}`);
+        const productRes = await fetch(`https://greencart-backend-085d.onrender.com/productos/${item.productId}`);
         const productActual = await productRes.json();
 
         const stockUpdate = {
@@ -79,7 +79,7 @@ function Pago() {
           productStock: productActual.productStock - item.quantity,
         };
 
-        await fetch(`http://localhost:8080/productos/actualizar-stock/${item.productId}`, {
+        await fetch(`https://greencart-backend-085d.onrender.com/productos/actualizar-stock/${item.productId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(stockUpdate),

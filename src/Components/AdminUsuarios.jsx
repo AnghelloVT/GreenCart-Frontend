@@ -52,7 +52,7 @@ export default function AdminUsuarios() {
   const fetchUsuarios = async () => {
     setCargando(true);
     try {
-      const response = await fetch("http://localhost:8080/usuarios/listar");
+      const response = await fetch("https://greencart-backend-085d.onrender.com/usuarios/listar");
       const data = await response.json();
       setUsuarios(data.map(normalizarUsuario));
     } catch (error) {
@@ -68,7 +68,7 @@ export default function AdminUsuarios() {
 
     setCargando(true);
     try {
-      const res = await fetch(`http://localhost:8080/usuarios/id/${idBuscar}`);
+      const res = await fetch(`https://greencart-backend-085d.onrender.com/usuarios/id/${idBuscar}`);
       const data = await res.json();
 
       if (data.error) {
@@ -91,7 +91,7 @@ export default function AdminUsuarios() {
     setCargando(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/usuarios/correo/${correoBuscar}`
+        `https://greencart-backend-085d.onrender.com/usuarios/correo/${correoBuscar}`
       );
       const data = await res.json();
 
@@ -133,7 +133,7 @@ export default function AdminUsuarios() {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/usuarios/eliminar/${id}`, {
+      const res = await fetch(`https://greencart-backend-085d.onrender.com/usuarios/eliminar/${id}`, {
         method: "DELETE",
       });
 
@@ -166,7 +166,7 @@ export default function AdminUsuarios() {
   const guardarCambios = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/usuarios/editar/${editUser.id}`,
+        `https://greencart-backend-085d.onrender.com/usuarios/editar/${editUser.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

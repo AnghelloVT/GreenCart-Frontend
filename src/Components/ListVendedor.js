@@ -7,7 +7,7 @@ function MisProductosVendedor({ vendedorId }) {
   useEffect(() => {
     if (!vendedorId) return;
 
-    fetch(`http://localhost:8080/productos/vendedor/${vendedorId}`)
+    fetch(`https://greencart-backend-085d.onrender.com/productos/vendedor/${vendedorId}`)
       .then((res) => {
         if (!res.ok) throw new Error('Error al obtener productos');
         return res.json();

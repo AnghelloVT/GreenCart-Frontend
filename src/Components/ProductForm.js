@@ -21,7 +21,7 @@ function ProductForm({ onProductAdded }) {
    const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/categorias/activas')
+    fetch('https://greencart-backend-085d.onrender.com/categorias/activas')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error('Error fetching categories:', err));
@@ -72,7 +72,7 @@ function ProductForm({ onProductAdded }) {
   }
 
   try {
-    const response = await fetch("http://localhost:8080/productos/save", {
+    const response = await fetch("https://greencart-backend-085d.onrender.com/productos/save", {
       method: "POST",
       body: formDataToSend,
     });

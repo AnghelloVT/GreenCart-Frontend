@@ -19,7 +19,7 @@ function VendedorPage() {
     return;
   }
 
-    fetch(`http://localhost:8080/productos/vendedor/${vendedorId}`)
+    fetch(`https://greencart-backend-085d.onrender.com/productos/vendedor/${vendedorId}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -42,7 +42,7 @@ function VendedorPage() {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:8080/productos/delete/${productId}`, {
+        fetch(`https://greencart-backend-085d.onrender.com/productos/delete/${productId}`, {
           method: 'DELETE',
         })
           .then((res) => {
@@ -61,7 +61,7 @@ function VendedorPage() {
   };
 
   const handleEdit = (productId, formData) => {
-  fetch(`http://localhost:8080/productos/update/${productId}`, {
+  fetch(`https://greencart-backend-085d.onrender.com/productos/update/${productId}`, {
     method: 'PUT',
     body: formData, 
    

@@ -24,7 +24,7 @@ export function CartProvider({ children }) {
 
   const addToCart = async (product) => {
   // Traer stock real desde backend
-  const res = await fetch(`http://localhost:8080/productos/${product.productId}`);
+  const res = await fetch(`https://greencart-backend-085d.onrender.com/productos/${product.productId}`);
   const productActual = await res.json();
 
   setCart((prevCart) => {

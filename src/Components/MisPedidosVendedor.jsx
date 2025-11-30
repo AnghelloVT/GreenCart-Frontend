@@ -15,7 +15,7 @@ export default function MisPedidosVendedor() {
         }
 
         const token = localStorage.getItem("token"); // si tu backend requiere auth
-        const endpoint = `http://localhost:8080/pedidos/seller/${user.id}`;
+        const endpoint = `https://greencart-backend-085d.onrender.com/pedidos/seller/${user.id}`;
 
         fetch(endpoint, {
             method: "GET",
@@ -32,7 +32,7 @@ export default function MisPedidosVendedor() {
 
     const handleDescargarExcel = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/pedidoitems/seller/${user.id}/excel`, {
+            const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidoitems/seller/${user.id}/excel`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}` // opcional
@@ -56,7 +56,7 @@ export default function MisPedidosVendedor() {
     const handleUpdateStatus = async (itemId, newStatus) => {
         try {
             const token = localStorage.getItem("token"); // si tu backend requiere auth
-            const response = await fetch(`http://localhost:8080/pedidoitems/${itemId}/status`, {
+            const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidoitems/${itemId}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

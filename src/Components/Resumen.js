@@ -11,7 +11,7 @@ function Resumen() {
   useEffect(() => {
     if (orderId) {
       // ver pedido guardado desde "MisPedidos"
-      fetch(`http://localhost:8080/pedidos/${orderId}`)
+      fetch(`https://greencart-backend-085d.onrender.com/pedidos/${orderId}`)
         .then(res => {
           if (!res.ok) throw new Error("Error al obtener el pedido");
           return res.json();
@@ -38,7 +38,7 @@ function Resumen() {
   // Función para descargar el PDF
   const descargarPDF = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:8080/pedidos/${orderId}/pdf`, {
+      const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/${orderId}/pdf`, {
         method: "GET",
         headers: {
           "Content-Type": "application/pdf",

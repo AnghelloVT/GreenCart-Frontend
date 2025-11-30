@@ -11,7 +11,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
   const [editFile, setEditFile] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/categorias')
+    fetch('https://greencart-backend-085d.onrender.com/categorias')
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((err) => console.error('Error cargando categorías:', err));

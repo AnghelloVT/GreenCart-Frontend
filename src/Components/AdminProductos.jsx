@@ -59,7 +59,7 @@ export default function AdminProductos() {
 
     setCargando(true);
     try {
-      const res = await fetch(`http://localhost:8080/productos/${idBuscar}`);
+      const res = await fetch(`https://greencart-backend-085d.onrender.com/productos/${idBuscar}`);
       const data = await res.json();
 
       if (!data || data.error) {
@@ -81,7 +81,7 @@ export default function AdminProductos() {
     setCargando(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/productos/category/${categoriaBuscar}`
+        `https://greencart-backend-085d.onrender.com/productos/category/${categoriaBuscar}`
       );
       const data = await res.json();
 
@@ -104,7 +104,7 @@ export default function AdminProductos() {
     setCargando(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/productos/vendedor/${vendedorBuscar}`
+        `https://greencart-backend-085d.onrender.com/productos/vendedor/${vendedorBuscar}`
       );
       const data = await res.json();
 
@@ -144,7 +144,7 @@ export default function AdminProductos() {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/productos/delete/${id}`,
+        `https://greencart-backend-085d.onrender.com/productos/delete/${id}`,
         { method: "DELETE" }
       );
 
@@ -191,7 +191,7 @@ export default function AdminProductos() {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/productos/update/${editProduct.productId}`,
+        `https://greencart-backend-085d.onrender.com/productos/update/${editProduct.productId}`,
         {
           method: "PUT",
           body: formData,

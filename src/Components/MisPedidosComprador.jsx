@@ -10,7 +10,7 @@ export default function MisPedidosComprador() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const endpoint = `http://localhost:8080/pedidos/mis-pedidos/${user.id}`;
+        const endpoint = `https://greencart-backend-085d.onrender.com/pedidos/mis-pedidos/${user.id}`;
 
         fetch(endpoint)
             .then(res => {
@@ -24,7 +24,7 @@ export default function MisPedidosComprador() {
 
     const handleCancelarPedido = async (pedidoId) => {
         try {
-            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/cancelar`, {
+            const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/${pedidoId}/cancelar`, {
                 method: "POST",
             });
             if (!response.ok) throw new Error("No se pudo cancelar el pedido");
@@ -39,7 +39,7 @@ export default function MisPedidosComprador() {
 
     const handleEntregarPedido = async (pedidoId) => {
         try {
-            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/entregar`, {
+            const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/${pedidoId}/entregar`, {
                 method: "POST",
             });
             if (!response.ok) throw new Error("No se pudo marcar como entregado");
@@ -54,7 +54,7 @@ export default function MisPedidosComprador() {
 
     const handleDescargarPDF = async (pedidoId) => {
         try {
-            const response = await fetch(`http://localhost:8080/pedidos/${pedidoId}/pdf`);
+            const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidos/${pedidoId}/pdf`);
             if (!response.ok) throw new Error("Error al generar PDF");
 
             const blob = await response.blob();
