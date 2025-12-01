@@ -16,7 +16,7 @@ export default function AdminReclamos() {
   const estadosPermitidos = ["EN_PROCESO", "RESUELTO"];
 
   useEffect(() => {
-    fetch("/reclamos/all")
+    fetch("https://greencart-backend-085d.onrender.com/reclamos/all")
       .then(res => res.json())
       .then(data => setReclamos(data))
       .catch(err => console.error("Error al cargar reclamos:", err));
@@ -29,7 +29,7 @@ export default function AdminReclamos() {
   };
 
   const guardarCambios = () => {
-    fetch(`/reclamos/update/${reclamoActivo.idcomplaints}`, {
+    fetch(`https://greencart-backend-085d.onrender.com/reclamos/update/${reclamoActivo.idcomplaints}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ claimstatus: nuevoEstado }),

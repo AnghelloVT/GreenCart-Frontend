@@ -69,7 +69,7 @@ export default function Reclamos() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/reclamos/save", {
+      const res = await fetch("https://greencart-backend-085d.onrender.com/reclamos/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(nuevoReclamo),

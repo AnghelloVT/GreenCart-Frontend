@@ -43,7 +43,7 @@ function Pago() {
         status: "PENDIENTE",
       };
 
-      const pedidoRes = await fetch("/pedidos/save", {
+      const pedidoRes = await fetch("https://greencart-backend-085d.onrender.com/pedidos/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pedidoData),

@@ -19,8 +19,7 @@ export default function Header() {
 
   const nombre =
     user
-      ? `${user.nombre ?? user.firstName ?? ""} ${
-          user.apellidos ?? user.lastName ?? ""
+      ? `${user.nombre ?? user.firstName ?? ""} ${user.apellidos ?? user.lastName ?? ""
         }`.trim()
       : "Invitado";
 
@@ -33,7 +32,6 @@ export default function Header() {
   // 🔹 Funciones de navegación
   const goToCart = () => navigate("/carrito");
   const goToProductos = () => navigate("/productos");
-  const goToReclamos = () => navigate("/reclamos");
   const goToMisPedidos = () => navigate("/mis-pedidos");
 
   return (
@@ -78,18 +76,15 @@ export default function Header() {
             <span style={styles.welcome}>Bienvenido, {nombre}</span>
 
             <button
-              className="btn btn-outline-secondary btn-sm"
+              style={styles.misPedidosBtn}
+              onMouseEnter={e => (e.target.style.backgroundColor = "#a5d6a7", e.target.style.color = "white")}
+              onMouseLeave={e => (e.target.style.backgroundColor = "#fff", e.target.style.color = "#2e7d32")}
               onClick={goToMisPedidos}
             >
               📝 Mis Pedidos
             </button>
 
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={goToReclamos}
-            >
-              Reclamos
-            </button>
+
 
             <button style={styles.logoutBtn} onClick={logout}>
               Cerrar Sesión
@@ -186,4 +181,21 @@ const styles = {
     borderRadius: "20px",
     color: "white",
   },
+
+  misPedidosBtn: {
+    backgroundColor: "#fff",
+    color: "#2e7d32",
+    border: "2px solid #2e7d32",
+    padding: "0.5rem 1.1rem",
+    fontWeight: "600",
+    borderRadius: "20px",
+    cursor: "pointer",
+    transition: "0.25s ease",
+  },
+
+  misPedidosBtnHover: {
+    backgroundColor: "#a5d6a7",
+    color: "white",
+  },
+
 };
