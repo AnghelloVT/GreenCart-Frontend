@@ -32,15 +32,13 @@ export default function AdminProductos() {
     productStock: p.productStock,
     categoryId: p.categoryId,
     vendedorId: p.vendedorId,
-    imageUrl: p.productImage
-      ? `http://localhost:8080/uploads/${p.productImage}`
-      : null,
+    imageUrl: p.productImage ? p.productImage : null,
   });
 
   const fetchProductos = async () => {
     setCargando(true);
     try {
-      const response = await fetch("http://localhost:8080/productos/all");
+      const response = await fetch("https://greencart-backend-085d.onrender.com/productos/all");
       const data = await response.json();
       setProductos(data.map(normalizarProducto));
     } catch {

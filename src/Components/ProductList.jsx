@@ -45,7 +45,7 @@ function ProductList() {
             >
               <div className="card h-100 shadow-sm border-0">
                 <img
-             src={`/uploads/${p.productImage}`}
+             src={p.productImage}
              className="card-img-top product-image"
              alt={p.productName}
                 />
