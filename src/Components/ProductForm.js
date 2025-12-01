@@ -18,7 +18,7 @@ function ProductForm({ onProductAdded }) {
     active: true,
   });
 
-   const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     fetch('https://greencart-backend-085d.onrender.com/categorias/activas')
@@ -36,83 +36,84 @@ function ProductForm({ onProductAdded }) {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const selectedCategory = categories.find(
-    (cat) => cat.categoryId === parseInt(formData.categoryId)
-  );
+    const selectedCategory = categories.find(
+      (cat) => cat.categoryId === parseInt(formData.categoryId)
+    );
 
-  if (!selectedCategory) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Categoría inválida',
-      text: 'Por favor selecciona una categoría válida.',
-    });
-    return;
-  }
-
-  const productData = {
-    productName: formData.productName,
-    categoryId: parseInt(formData.categoryId),
-    productDescription: formData.productDescription,
-    productPrice: parseFloat(formData.productPrice),
-    productStock: parseInt(formData.productStock),
-    active: formData.active,
-    vendedorId: vendedorId,
-  };
-
-  const formDataToSend = new FormData();
-  formDataToSend.append(
-    "product",
-    new Blob([JSON.stringify(productData)], { type: "application/json" })
-  );
-
-  if (formData.productImageFile) {
-    formDataToSend.append("image", formData.productImageFile);
-  }
-
-  try {
-    const response = await fetch("https://greencart-backend-085d.onrender.com/productos/save", {
-      method: "POST",
-      body: formDataToSend,
-    });
-
-    if (response.ok) {
+    if (!selectedCategory) {
       Swal.fire({
-        icon: "success",
-        title: "¡Producto agregado exitosamente!",
-        showConfirmButton: false,
-        timer: 1500,
+        icon: 'error',
+        title: 'Categoría inválida',
+        text: 'Por favor selecciona una categoría válida.',
+      });
+      return;
+    }
+
+    const productData = {
+      productName: formData.productName,
+      categoryId: parseInt(formData.categoryId),
+      productDescription: formData.productDescription,
+      productPrice: parseFloat(formData.productPrice),
+      productStock: parseInt(formData.productStock),
+      active: formData.active,
+      vendedorId: vendedorId,  
+    };
+
+    const formDataToSend = new FormData();
+    formDataToSend.append(
+      "product",
+      new Blob([JSON.stringify(productData)], { type: "application/json" })
+    );
+
+    if (formData.productImageFile) {
+      formDataToSend.append("image", formData.productImageFile);
+    }
+
+
+    try {
+      const response = await fetch("https://greencart-backend-085d.onrender.com/productos/save", {
+        method: "POST",
+        body: formDataToSend,
       });
 
-      setFormData({
-        productName: "",
-        categoryId: "",
-        productDescription: "",
-        productPrice: "",
-        productStock: "",
-        active: true,
-        productImageFile: null,
-      });
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "¡Producto agregado exitosamente!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
-      if (onProductAdded) onProductAdded();
-    } else {
-      const errorText = await response.text();
+        setFormData({
+          productName: "",
+          categoryId: "",
+          productDescription: "",
+          productPrice: "",
+          productStock: "",
+          active: true,
+          productImageFile: null,
+        });
+
+        if (onProductAdded) onProductAdded();
+      } else {
+        const errorText = await response.text();
+        Swal.fire({
+          icon: "error",
+          title: "Error al agregar el producto",
+          text: errorText || "Intenta nuevamente más tarde.",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
       Swal.fire({
         icon: "error",
-        title: "Error al agregar el producto",
-        text: errorText || "Intenta nuevamente más tarde.",
+        title: "Error al conectar con el servidor",
+        text: "Por favor revisa tu conexión.",
       });
     }
-  } catch (error) {
-    console.error("Error:", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error al conectar con el servidor",
-      text: "Por favor revisa tu conexión.",
-    });
-  }
-};
+  };
 
   return (
     <div className="container my-4">
@@ -122,7 +123,7 @@ function ProductForm({ onProductAdded }) {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-           
+
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="productName" className="form-label">
@@ -205,16 +206,16 @@ function ProductForm({ onProductAdded }) {
                 />
               </div>
 
-                  <div className="mb-3">
-          <label htmlFor="productImage" className="form-label">Imagen del producto</label>
-         <input
-               type="file"
-         className="form-control"
-           id="productImage"
-           name="productImage"
-           onChange={(e) => setFormData({ ...formData, productImageFile: e.target.files[0] })}
-           />
-         </div>
+              <div className="mb-3">
+                <label htmlFor="productImage" className="form-label">Imagen del producto</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="productImage"
+                  name="productImage"
+                  onChange={(e) => setFormData({ ...formData, productImageFile: e.target.files[0] })}
+                />
+              </div>
 
               <div className="col-md-4 d-flex align-items-center mb-3">
                 <div className="form-check mt-3">
