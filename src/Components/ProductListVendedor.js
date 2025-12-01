@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function ProductListVendedor({ products, onDelete, onEdit }) {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
   const [categories, setCategories] = useState([]);
-  const [editFile, setEditFile] = useState(null);
 
   useEffect(() => {
-    fetch('https://greencart-backend-085d.onrender.com/categorias')
+    fetch("https://greencart-backend-085d.onrender.com/categorias")
       .then((res) => res.json())
       .then((data) => setCategories(data))
-      .catch((err) => console.error('Error cargando categorías:', err));
+      .catch((err) => console.error("Error cargando categorías:", err));
   }, []);
 
   const startEdit = (product) => {
@@ -23,73 +22,54 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
       productPrice: product.productPrice,
       productStock: product.productStock,
       active: product.active,
-      vendedorId: JSON.parse(localStorage.getItem('user'))?.id,
-      imageUrl: product.imageUrl || '', // Asignamos la URL de la imagen o un string vacío
+      vendedorId: JSON.parse(localStorage.getItem("user"))?.id,
+      imageUrl: product.imageUrl || "",
     });
-    setEditFile(null);
   };
 
   const cancelEdit = () => {
     setEditId(null);
     setEditData({});
-    setEditFile(null);
   };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setEditData({
       ...editData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
   const saveEdit = () => {
     const formData = new FormData();
-    formData.append('productId', editData.productId);
-    formData.append('productName', editData.productName);
-    formData.append('categoryId', editData.categoryId);
-    formData.append('productDescription', editData.productDescription);
-    formData.append('productPrice', editData.productPrice);
-    formData.append('productStock', editData.productStock);
-    formData.append('active', editData.active);
-    formData.append('vendedorId', JSON.parse(localStorage.getItem('user'))?.id);
-
-    // Si el campo de imagen contiene un archivo, lo añadimos
-    if (editFile) {
-      formData.append('file', editFile);
-    }
-
-    // Si la URL de la imagen es válida, también la agregamos
-    if (editData.imageUrl && !editData.imageUrl.startsWith('http')) {
-      formData.append('imageUrl', editData.imageUrl);
-    }
+    formData.append("productId", editData.productId);
+    formData.append("productName", editData.productName);
+    formData.append("categoryId", editData.categoryId);
+    formData.append("productDescription", editData.productDescription);
+    formData.append("productPrice", editData.productPrice);
+    formData.append("productStock", editData.productStock);
+    formData.append("active", editData.active);
+    formData.append("vendedorId", editData.vendedorId);
+    formData.append("productImage", editData.imageUrl); // enviar URL aquí
 
     onEdit(editData.productId, formData);
     setEditId(null);
   };
 
-  const handleFileChange = (e) => {
-    setEditFile(e.target.files[0]);
-  };
-
   return (
     <div className="container my-5">
-      <h2 className="text-success fw-bold mb-4 text-center">
-        🌱 Mis Productos Ecológicos
-      </h2>
+      <h2 className="text-success fw-bold mb-4 text-center">🌱 Mis Productos Ecológicos</h2>
       <div className="row">
         {products.length === 0 && <p className="text-center">No tienes productos aún.</p>}
         {products.map((p) => (
           <div key={p.productId} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div className="card h-100 shadow-sm border-0">
-              {/* Usamos imageUrl o una imagen por defecto */}
               <img
-                src={p.imageUrl ? p.imageUrl : '/uploads/default-image.jpg'}
+                src={p.imageUrl ? p.imageUrl : "/uploads/default-image.jpg"}
                 className="card-img-top"
                 alt={p.productName}
-                style={{ objectFit: 'cover', height: '200px' }}
+                style={{ objectFit: "cover", height: "200px" }}
               />
-
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-dark">{p.productName}</h5>
                 <p className="card-text text-muted flex-grow-1">{p.productDescription}</p>
@@ -119,7 +99,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
         ))}
       </div>
 
-      {/* Modal de Edición */}
+      {/* Modal de edición */}
       <div
         className="modal fade"
         id="editProductModal"
@@ -133,7 +113,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
               <h5 className="modal-title" id="editProductModalLabel">
                 Editar Producto
               </h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={cancelEdit}></button>
             </div>
             <div className="modal-body">
               <div className="mb-3">
@@ -142,7 +122,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                   type="text"
                   className="form-control"
                   name="productName"
-                  value={editData.productName || ''}
+                  value={editData.productName || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -151,7 +131,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                 <textarea
                   className="form-control"
                   name="productDescription"
-                  value={editData.productDescription || ''}
+                  value={editData.productDescription || ""}
                   onChange={handleChange}
                 ></textarea>
               </div>
@@ -161,7 +141,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                   type="number"
                   className="form-control"
                   name="productPrice"
-                  value={editData.productPrice || ''}
+                  value={editData.productPrice || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -171,9 +151,25 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                   type="number"
                   className="form-control"
                   name="productStock"
-                  value={editData.productStock || ''}
+                  value={editData.productStock || ""}
                   onChange={handleChange}
                 />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Categoría</label>
+                <select
+                  className="form-select"
+                  name="categoryId"
+                  value={editData.categoryId || ""}
+                  onChange={handleChange}
+                >
+                  <option value="">-- Selecciona una categoría --</option>
+                  {categories.map((c) => (
+                    <option key={c.categoryId} value={c.categoryId}>
+                      {c.category}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="mb-3">
                 <label className="form-label">URL Imagen (opcional)</label>
@@ -181,28 +177,14 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                   type="text"
                   className="form-control"
                   name="imageUrl"
-                  value={editData.imageUrl || ''}
+                  value={editData.imageUrl || ""}
                   onChange={handleChange}
-                  placeholder="URL de la imagen"
-                />
-                <small>Por ejemplo, https://ejemplo.com/imagen.jpg</small>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Imagen de archivo (opcional)</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={handleFileChange}
+                  placeholder="https://ejemplo.com/imagen.jpg"
                 />
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-                onClick={cancelEdit}
-              >
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={cancelEdit}>
                 Cancelar
               </button>
               <button type="button" className="btn btn-primary" onClick={saveEdit}>
