@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function ProductListVendedor({ products, onDelete, onEdit }) {
   const [editId, setEditId] = useState(null);
@@ -25,8 +23,8 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
       productPrice: product.productPrice,
       productStock: product.productStock,
       active: product.active,
-      vendedorId: JSON.parse(localStorage.getItem("user"))?.id,
-      imageUrl: product.imageUrl || "", // Asignamos la URL de la imagen o un string vacío
+      vendedorId: JSON.parse(localStorage.getItem('user'))?.id,
+      imageUrl: product.imageUrl || '', // Asignamos la URL de la imagen o un string vacío
     });
     setEditFile(null);
   };
@@ -47,23 +45,23 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
 
   const saveEdit = () => {
     const formData = new FormData();
-    formData.append("productId", editData.productId);
-    formData.append("productName", editData.productName);
-    formData.append("categoryId", editData.categoryId);
-    formData.append("productDescription", editData.productDescription);
-    formData.append("productPrice", editData.productPrice);
-    formData.append("productStock", editData.productStock);
-    formData.append("active", editData.active);
-    formData.append("vendedorId", JSON.parse(localStorage.getItem('user'))?.id);
+    formData.append('productId', editData.productId);
+    formData.append('productName', editData.productName);
+    formData.append('categoryId', editData.categoryId);
+    formData.append('productDescription', editData.productDescription);
+    formData.append('productPrice', editData.productPrice);
+    formData.append('productStock', editData.productStock);
+    formData.append('active', editData.active);
+    formData.append('vendedorId', JSON.parse(localStorage.getItem('user'))?.id);
 
     // Si el campo de imagen contiene un archivo, lo añadimos
     if (editFile) {
-      formData.append("file", editFile);
+      formData.append('file', editFile);
     }
 
     // Si la URL de la imagen es válida, también la agregamos
     if (editData.imageUrl && !editData.imageUrl.startsWith('http')) {
-      formData.append("imageUrl", editData.imageUrl);
+      formData.append('imageUrl', editData.imageUrl);
     }
 
     onEdit(editData.productId, formData);
@@ -84,9 +82,13 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
         {products.map((p) => (
           <div key={p.productId} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div className="card h-100 shadow-sm border-0">
-
               {/* Usamos imageUrl o una imagen por defecto */}
-              <img src={p.imageUrl || '/uploads/default-image.jpg'} className="card-img-top" alt={p.productName} />
+              <img
+                src={p.imageUrl ? p.imageUrl : '/uploads/default-image.jpg'}
+                className="card-img-top"
+                alt={p.productName}
+                style={{ objectFit: 'cover', height: '200px' }}
+              />
 
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-dark">{p.productName}</h5>
@@ -117,6 +119,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
         ))}
       </div>
 
+      {/* Modal de Edición */}
       <div
         className="modal fade"
         id="editProductModal"
@@ -130,105 +133,80 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
               <h5 className="modal-title" id="editProductModalLabel">
                 Editar Producto
               </h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onClick={cancelEdit}></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label>Nombre:</label>
+                <label className="form-label">Nombre</label>
                 <input
                   type="text"
+                  className="form-control"
                   name="productName"
                   value={editData.productName || ''}
                   onChange={handleChange}
-                  className="form-control"
                 />
               </div>
               <div className="mb-3">
-                <label>Categoría:</label>
-                <select
-                  name="categoryId"
-                  value={editData.categoryId || ''}
-                  onChange={handleChange}
-                  className="form-select"
-                >
-                  <option value="">-- Seleccione categoría --</option>
-                  {categories.map((cat) => (
-                    <option key={cat.categoryId} value={cat.categoryId}>
-                      {cat.category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-3">
-                <label>Descripción:</label>
+                <label className="form-label">Descripción</label>
                 <textarea
+                  className="form-control"
                   name="productDescription"
                   value={editData.productDescription || ''}
                   onChange={handleChange}
-                  className="form-control"
-                />
+                ></textarea>
               </div>
               <div className="mb-3">
-                <label>Precio:</label>
+                <label className="form-label">Precio</label>
                 <input
                   type="number"
-                  step="0.01"
+                  className="form-control"
                   name="productPrice"
                   value={editData.productPrice || ''}
                   onChange={handleChange}
-                  className="form-control"
                 />
               </div>
               <div className="mb-3">
-                <label>Stock:</label>
+                <label className="form-label">Stock</label>
                 <input
                   type="number"
+                  className="form-control"
                   name="productStock"
                   value={editData.productStock || ''}
                   onChange={handleChange}
-                  className="form-control"
                 />
               </div>
-
-              {/* Campo para la URL de la imagen */}
               <div className="mb-3">
-                <label>URL de Imagen (opcional):</label>
+                <label className="form-label">URL Imagen (opcional)</label>
                 <input
                   type="text"
+                  className="form-control"
                   name="imageUrl"
                   value={editData.imageUrl || ''}
                   onChange={handleChange}
-                  className="form-control"
-                  placeholder="Ingresa la URL de la imagen"
+                  placeholder="URL de la imagen"
                 />
+                <small>Por ejemplo, https://ejemplo.com/imagen.jpg</small>
               </div>
-
-              {/* Subida de archivo de imagen */}
               <div className="mb-3">
-                <label>Imagen (opcional):</label>
-                <input type="file" onChange={handleFileChange} className="form-control" />
-              </div>
-
-              <div className="form-check mb-3">
+                <label className="form-label">Imagen de archivo (opcional)</label>
                 <input
-                  type="checkbox"
-                  name="active"
-                  checked={editData.active || false}
-                  onChange={handleChange}
-                  className="form-check-input"
-                  id="activeCheckModal"
+                  type="file"
+                  className="form-control"
+                  onChange={handleFileChange}
                 />
-                <label className="form-check-label" htmlFor="activeCheckModal">
-                  Activo
-                </label>
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={cancelEdit}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+                onClick={cancelEdit}
+              >
                 Cancelar
               </button>
-              <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={saveEdit}>
-                Guardar
+              <button type="button" className="btn btn-primary" onClick={saveEdit}>
+                Guardar Cambios
               </button>
             </div>
           </div>
