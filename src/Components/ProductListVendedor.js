@@ -22,8 +22,8 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
       productPrice: product.productPrice,
       productStock: product.productStock,
       active: product.active,
-      vendedorId: JSON.parse(localStorage.getItem("user"))?.id,
-      imageUrl: product.imageUrl || "",
+      vendedorId: product.vendedorId,
+      imageUrl: product.productImage || "",
     });
   };
 
@@ -50,7 +50,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
     formData.append("productStock", editData.productStock);
     formData.append("active", editData.active);
     formData.append("vendedorId", editData.vendedorId);
-    formData.append("productImage", editData.imageUrl); // enviar URL aquí
+    formData.append("imageUrl", editData.imageUrl);
 
     onEdit(editData.productId, formData);
     setEditId(null);
@@ -65,7 +65,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
           <div key={p.productId} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div className="card h-100 shadow-sm border-0">
               <img
-                src={p.imageUrl ? p.imageUrl : "/uploads/default-image.jpg"}
+                src={p.productImage || "/uploads/default-image.jpg"}
                 className="card-img-top"
                 alt={p.productName}
                 style={{ objectFit: "cover", height: "200px" }}
@@ -100,100 +100,107 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
       </div>
 
       {/* Modal de edición */}
-      <div
-        className="modal fade"
-        id="editProductModal"
-        tabIndex="-1"
-        aria-labelledby="editProductModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-lg modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="editProductModalLabel">
-                Editar Producto
-              </h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={cancelEdit}></button>
-            </div>
-            <div className="modal-body">
-              <div className="mb-3">
-                <label className="form-label">Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="productName"
-                  value={editData.productName || ""}
-                  onChange={handleChange}
-                />
+      {editId && (
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          aria-labelledby="editProductModalLabel"
+          aria-modal="true"
+          role="dialog"
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="editProductModalLabel">Editar Producto</h5>
+                <button type="button" className="btn-close" onClick={cancelEdit} aria-label="Close"></button>
               </div>
-              <div className="mb-3">
-                <label className="form-label">Descripción</label>
-                <textarea
-                  className="form-control"
-                  name="productDescription"
-                  value={editData.productDescription || ""}
-                  onChange={handleChange}
-                ></textarea>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="productName"
+                    value={editData.productName || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Descripción</label>
+                  <textarea
+                    className="form-control"
+                    name="productDescription"
+                    value={editData.productDescription || ""}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Precio</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="productPrice"
+                    value={editData.productPrice || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Stock</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="productStock"
+                    value={editData.productStock || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Categoría</label>
+                  <select
+                    className="form-select"
+                    name="categoryId"
+                    value={editData.categoryId || ""}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- Selecciona una categoría --</option>
+                    {categories.map((c) => (
+                      <option key={c.categoryId} value={c.categoryId}>
+                        {c.category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">URL Imagen (opcional)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="imageUrl"
+                    value={editData.imageUrl || ""}
+                    onChange={handleChange}
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                  />
+                </div>
+                <div className="form-check mb-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="active"
+                    checked={editData.active || false}
+                    onChange={handleChange}
+                    id="activeCheck"
+                  />
+                  <label className="form-check-label" htmlFor="activeCheck">Activo</label>
+                </div>
               </div>
-              <div className="mb-3">
-                <label className="form-label">Precio</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="productPrice"
-                  value={editData.productPrice || ""}
-                  onChange={handleChange}
-                />
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={cancelEdit}>Cancelar</button>
+                <button type="button" className="btn btn-primary" onClick={saveEdit}>Guardar Cambios</button>
               </div>
-              <div className="mb-3">
-                <label className="form-label">Stock</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="productStock"
-                  value={editData.productStock || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Categoría</label>
-                <select
-                  className="form-select"
-                  name="categoryId"
-                  value={editData.categoryId || ""}
-                  onChange={handleChange}
-                >
-                  <option value="">-- Selecciona una categoría --</option>
-                  {categories.map((c) => (
-                    <option key={c.categoryId} value={c.categoryId}>
-                      {c.category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">URL Imagen (opcional)</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="imageUrl"
-                  value={editData.imageUrl || ""}
-                  onChange={handleChange}
-                  placeholder="https://ejemplo.com/imagen.jpg"
-                />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={cancelEdit}>
-                Cancelar
-              </button>
-              <button type="button" className="btn btn-primary" onClick={saveEdit}>
-                Guardar Cambios
-              </button>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
