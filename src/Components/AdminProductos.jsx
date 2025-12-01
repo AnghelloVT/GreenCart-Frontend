@@ -20,7 +20,7 @@ export default function AdminProductos() {
     productStock: "",
     categoryId: "",
     vendedorId: "",
-    image: null,
+    imageUrl: "", 
   });
 
   // Normaliza datos del backend
@@ -32,7 +32,9 @@ export default function AdminProductos() {
     productStock: p.productStock,
     categoryId: p.categoryId,
     vendedorId: p.vendedorId,
-    imageUrl: p.productImage ? p.productImage : null,
+    imageUrl: p.productImage
+      ? p.productImage 
+      : null,
   });
 
   const fetchProductos = async () => {
@@ -166,7 +168,7 @@ export default function AdminProductos() {
       productStock: p.productStock,
       categoryId: p.categoryId,
       vendedorId: p.vendedorId,
-      image: null,
+      imageUrl: p.imageUrl || "", // Usar imageUrl en lugar de `image`
     });
 
     setEditModal(true);
@@ -183,8 +185,12 @@ export default function AdminProductos() {
     formData.append("categoryId", editProduct.categoryId);
     formData.append("vendedorId", editProduct.vendedorId);
 
-    if (editProduct.image instanceof File) {
-      formData.append("file", editProduct.image);
+    // Si es una URL válida, la agregamos
+    if (editProduct.imageUrl && !editProduct.imageUrl.startsWith('http')) {
+      formData.append("imageUrl", editProduct.imageUrl);
+    } else if (editProduct.imageUrl) {
+      // Si es una URL válida
+      formData.append("imageUrl", editProduct.imageUrl);
     }
 
     try {
@@ -215,7 +221,6 @@ export default function AdminProductos() {
       <main style={{ marginLeft: 240, padding: 40 }}>
         <h1>Productos</h1>
 
-        
         <div className="filtros-usuarios">
           <input
             type="number"
@@ -252,7 +257,6 @@ export default function AdminProductos() {
           </button>
         </div>
 
-        
         {cargando ? (
           <p>Cargando productos...</p>
         ) : (
@@ -263,7 +267,7 @@ export default function AdminProductos() {
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Stock</th>
-                <th>Categoría</th>
+                                <th>Categoría</th>
                 <th>Vendedor</th>
                 <th>Imagen</th>
                 <th>Acciones</th>
@@ -283,7 +287,7 @@ export default function AdminProductos() {
                     {p.imageUrl ? (
                       <img
                         src={p.imageUrl}
-                        alt=""
+                        alt="Imagen del producto"
                         width="60"
                         style={{ borderRadius: 6 }}
                       />
@@ -309,7 +313,6 @@ export default function AdminProductos() {
           </table>
         )}
 
-        
         {editModal && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -371,12 +374,14 @@ export default function AdminProductos() {
                 }
               />
 
-              <label>Nueva Imagen (opcional)</label>
+              <label>URL de Imagen (opcional)</label>
               <input
-                type="file"
+                type="text"
+                value={editProduct.imageUrl}
                 onChange={(e) =>
-                  setEditProduct({ ...editProduct, image: e.target.files[0] })
+                  setEditProduct({ ...editProduct, imageUrl: e.target.value })
                 }
+                placeholder="URL de la imagen"
               />
 
               <button className="btn-save" onClick={guardarCambios}>
@@ -393,3 +398,4 @@ export default function AdminProductos() {
     </div>
   );
 }
+

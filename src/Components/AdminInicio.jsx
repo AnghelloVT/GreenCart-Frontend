@@ -47,7 +47,7 @@ export default function DashboardInicio() {
           <Col md={4}>
             <Card className="text-center shadow-sm" style={{ borderRadius: "12px", padding: "20px", backgroundColor: "#1DA1F2", color: "#fff" }}>
               <Card.Body>
-                <FaTwitter size={30} className="mb-2" /> {/* logo antiguo de Twitter*/}
+                <FaTwitter size={30} className="mb-2" /> {/* Aquí el logo antiguo de Twitter; si quieres un SVG nuevo de X se puede reemplazar */}
                 <Card.Title>FOLLOWERS</Card.Title>
                 <Card.Text style={{ fontSize: "1.5rem", fontWeight: "bold" }}>50k</Card.Text>
               </Card.Body>

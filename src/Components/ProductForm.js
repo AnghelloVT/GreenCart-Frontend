@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ProductList from './ProductList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 
-
-
 function ProductForm({ onProductAdded }) {
   const vendedorId = JSON.parse(localStorage.getItem('user'))?.id;
-
 
   const [formData, setFormData] = useState({
     productName: '',
@@ -16,6 +12,7 @@ function ProductForm({ onProductAdded }) {
     productPrice: '',
     productStock: '',
     active: true,
+    productImageUrl: '', // Cambié esto para almacenar la URL de la imagen
   });
 
   const [categories, setCategories] = useState([]);
@@ -58,19 +55,20 @@ function ProductForm({ onProductAdded }) {
       productPrice: parseFloat(formData.productPrice),
       productStock: parseInt(formData.productStock),
       active: formData.active,
-      vendedorId: vendedorId,  
+      vendedorId: vendedorId,
+      productImage: formData.productImageUrl, // Usamos la URL de la imagen directamente
     };
 
     const formDataToSend = new FormData();
     formDataToSend.append(
-      "product",
-      new Blob([JSON.stringify(productData)], { type: "application/json" })
+      'product',
+      new Blob([JSON.stringify(productData)], { type: 'application/json' })
     );
 
-    if (formData.productImageFile) {
-      formDataToSend.append("image", formData.productImageFile);
+    // Solo agregamos la imagen al formulario si la URL no está vacía
+    if (formData.productImageUrl) {
+      formDataToSend.append('imageUrl', formData.productImageUrl);
     }
-
 
     try {
       const response = await fetch("https://greencart-backend-085d.onrender.com/productos/save", {
@@ -93,7 +91,7 @@ function ProductForm({ onProductAdded }) {
           productPrice: "",
           productStock: "",
           active: true,
-          productImageFile: null,
+          productImageUrl: "", // Limpiamos la URL de la imagen
         });
 
         if (onProductAdded) onProductAdded();
@@ -123,7 +121,6 @@ function ProductForm({ onProductAdded }) {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="productName" className="form-label">
@@ -207,13 +204,17 @@ function ProductForm({ onProductAdded }) {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="productImage" className="form-label">Imagen del producto</label>
+                <label htmlFor="productImageUrl" className="form-label">
+                  URL de la imagen
+                </label>
                 <input
-                  type="file"
+                  type="text"
                   className="form-control"
-                  id="productImage"
-                  name="productImage"
-                  onChange={(e) => setFormData({ ...formData, productImageFile: e.target.files[0] })}
+                  id="productImageUrl"
+                  name="productImageUrl"
+                  value={formData.productImageUrl}
+                  onChange={handleChange}
+                  placeholder="Ingresa la URL de la imagen"
                 />
               </div>
 
@@ -249,6 +250,7 @@ function ProductForm({ onProductAdded }) {
                     productPrice: '',
                     productStock: '',
                     active: true,
+                    productImageUrl: '', // Limpiar la URL de la imagen
                   })
                 }
               >

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-
-
 function ProductListVendedor({ products, onDelete, onEdit }) {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -28,6 +26,7 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
       productStock: product.productStock,
       active: product.active,
       vendedorId: JSON.parse(localStorage.getItem("user"))?.id,
+      imageUrl: product.imageUrl || "", // Asignamos la URL de la imagen o un string vacío
     });
     setEditFile(null);
   };
@@ -57,8 +56,14 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
     formData.append("active", editData.active);
     formData.append("vendedorId", JSON.parse(localStorage.getItem('user'))?.id);
 
+    // Si el campo de imagen contiene un archivo, lo añadimos
     if (editFile) {
       formData.append("file", editFile);
+    }
+
+    // Si la URL de la imagen es válida, también la agregamos
+    if (editData.imageUrl && !editData.imageUrl.startsWith('http')) {
+      formData.append("imageUrl", editData.imageUrl);
     }
 
     onEdit(editData.productId, formData);
@@ -80,7 +85,8 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
           <div key={p.productId} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div className="card h-100 shadow-sm border-0">
 
-              <img src={p.productImage} className="card-img-top" alt={p.productName} />
+              {/* Usamos imageUrl o una imagen por defecto */}
+              <img src={p.imageUrl || '/uploads/default-image.jpg'} className="card-img-top" alt={p.productName} />
 
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-dark">{p.productName}</h5>
@@ -110,7 +116,6 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
           </div>
         ))}
       </div>
-
 
       <div
         className="modal fade"
@@ -185,6 +190,20 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
                 />
               </div>
 
+              {/* Campo para la URL de la imagen */}
+              <div className="mb-3">
+                <label>URL de Imagen (opcional):</label>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  value={editData.imageUrl || ''}
+                  onChange={handleChange}
+                  className="form-control"
+                  placeholder="Ingresa la URL de la imagen"
+                />
+              </div>
+
+              {/* Subida de archivo de imagen */}
               <div className="mb-3">
                 <label>Imagen (opcional):</label>
                 <input type="file" onChange={handleFileChange} className="form-control" />
@@ -218,4 +237,5 @@ function ProductListVendedor({ products, onDelete, onEdit }) {
     </div>
   );
 }
+
 export default ProductListVendedor;

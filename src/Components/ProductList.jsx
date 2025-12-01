@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../Context/CartContext";
 import Header from "./Header";
-import Footer from "./Footer"
+import Footer from "./Footer";
 import "../Estilos/ProductList.css";
 
 function ProductList() {
@@ -21,7 +21,7 @@ function ProductList() {
       productName: p.productName,
       productDescription: p.productDescription,
       productPrice: p.productPrice,
-      productImage: p.productImage,
+      productImage: p.productImage, 
       sellerId: p.vendedorId, 
       quantity: 1,
       total: p.productPrice,
@@ -45,9 +45,9 @@ function ProductList() {
             >
               <div className="card h-100 shadow-sm border-0">
                 <img
-             src={p.productImage}
-             className="card-img-top product-image"
-             alt={p.productName}
+                  src={p.productImage} // Usa directamente la URL completa
+                  className="card-img-top product-image"
+                  alt={p.productName}
                 />
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title text-dark">{p.productName}</h5>
@@ -69,11 +69,10 @@ function ProductList() {
                 </div>
               </div>
             </div>
-            
           ))}
         </div>
       </div>
-       <Footer />
+      <Footer />
     </>
   );
 }
