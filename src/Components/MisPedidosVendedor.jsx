@@ -14,14 +14,14 @@ export default function MisPedidosVendedor() {
             return;
         }
 
-        const token = localStorage.getItem("token"); // si tu backend requiere auth
+        const token = localStorage.getItem("token"); 
         const endpoint = `https://greencart-backend-085d.onrender.com/pedidos/seller/${user.id}`;
 
         fetch(endpoint, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // quitar si no se requiere
+                "Authorization": `Bearer ${token}` 
             }
         })
             .then(res => res.json())
@@ -55,12 +55,12 @@ export default function MisPedidosVendedor() {
 
     const handleUpdateStatus = async (itemId, newStatus) => {
         try {
-            const token = localStorage.getItem("token"); // si tu backend requiere auth
+            const token = localStorage.getItem("token"); 
             const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidoitems/${itemId}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` // quitar si no se requiere
+                    "Authorization": `Bearer ${token}` 
                 },
                 body: JSON.stringify({ status: newStatus }) // enviar como objeto
             });

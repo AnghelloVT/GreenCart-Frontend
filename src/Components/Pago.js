@@ -65,7 +65,7 @@ function Pago() {
 
         console.log(itemData);
 
-        await fetch("/pedidoitems/save", {
+        await fetch("https://greencart-backend-085d.onrender.com/pedidoitems/save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(itemData),

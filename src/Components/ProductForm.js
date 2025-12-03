@@ -12,7 +12,7 @@ function ProductForm({ onProductAdded }) {
     productPrice: '',
     productStock: '',
     active: true,
-    productImageUrl: '', // Cambié esto para almacenar la URL de la imagen
+    productImageUrl: '', 
   });
 
   const [categories, setCategories] = useState([]);
@@ -56,7 +56,7 @@ function ProductForm({ onProductAdded }) {
       productStock: parseInt(formData.productStock),
       active: formData.active,
       vendedorId: vendedorId,
-      productImage: formData.productImageUrl, // Usamos la URL de la imagen directamente
+      productImage: formData.productImageUrl, 
     };
 
     const formDataToSend = new FormData();
