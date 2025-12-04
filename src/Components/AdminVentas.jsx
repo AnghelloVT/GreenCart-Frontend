@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import AdminPage from "./AdminPage";
-import "../Estilos/AdminUsuarios.css"; 
+import "../Estilos/AdminUsuarios.css";
 import Swal from "sweetalert2";
 
 export default function AdminVentas() {
@@ -13,11 +13,12 @@ export default function AdminVentas() {
   // Normaliza los datos de ventas
   const normalizarVenta = (v) => ({
     id: v.orderId,
-    comprador: v.buyerId, 
-    fecha: v.date ? new Date(v.date).toLocaleString() : "N/A",
+    comprador: v.buyerId,
+    fecha: v.date ? new Date(v.date).toISOString().split("T")[0] : "N/A",
     total: v.total?.toFixed(2) || "0.00",
     estado: v.status || "N/A",
   });
+
 
   const fetchVentas = useCallback(async () => {
     setCargando(true);
@@ -77,7 +78,7 @@ export default function AdminVentas() {
 
   useEffect(() => {
     fetchVentas();
-  }, [fetchVentas]); 
+  }, [fetchVentas]);
 
   return (
     <div>

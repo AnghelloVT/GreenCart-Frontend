@@ -8,26 +8,34 @@ export default function MisPedidosVendedor() {
     const [expandedOrderId, setExpandedOrderId] = useState(null);
     const user = JSON.parse(localStorage.getItem("user"));
 
+    // 🔄 FUNCION PARA RECARGAR PEDIDOS
+    const recargarPedidos = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const endpoint = `https://greencart-backend-085d.onrender.com/pedidos/seller/${user.id}`;
+
+            const res = await fetch(endpoint, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await res.json();
+            setPedidos(data);
+        } catch (err) {
+            console.error("Error recargando pedidos:", err);
+        }
+    };
+
     useEffect(() => {
         if (!user) {
             setLoading(false);
             return;
         }
 
-        const token = localStorage.getItem("token"); 
-        const endpoint = `https://greencart-backend-085d.onrender.com/pedidos/seller/${user.id}`;
-
-        fetch(endpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` 
-            }
-        })
-            .then(res => res.json())
-            .then(data => setPedidos(data))
-            .catch(err => console.error(err))
-            .finally(() => setLoading(false));
+        recargarPedidos().finally(() => setLoading(false));
     }, [user]);
 
     const handleDescargarExcel = async () => {
@@ -35,7 +43,7 @@ export default function MisPedidosVendedor() {
             const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidoitems/seller/${user.id}/excel`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}` // opcional
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             });
             if (!response.ok) throw new Error("Error al generar Excel");
@@ -53,29 +61,24 @@ export default function MisPedidosVendedor() {
         }
     };
 
+    //Actualizar estado de un item y recargar
     const handleUpdateStatus = async (itemId, newStatus) => {
         try {
-            const token = localStorage.getItem("token"); 
+            const token = localStorage.getItem("token");
             const response = await fetch(`https://greencart-backend-085d.onrender.com/pedidoitems/${itemId}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` 
+                    "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify({ status: newStatus }) // enviar como objeto
+                body: JSON.stringify({ status: newStatus })
             });
 
             if (!response.ok) throw new Error("Error al actualizar el estado");
 
-            // Actualizar estado local inmediatamente
-            setPedidos(prevPedidos =>
-                prevPedidos.map(pedido => ({
-                    ...pedido,
-                    items: pedido.items.map(item =>
-                        item.itemId === itemId ? { ...item, status: newStatus } : item
-                    )
-                }))
-            );
+            //DESPUÉS DE ACTUALIZAR, RECARGAR DESDE BACKEND
+            await recargarPedidos();
+
         } catch (error) {
             console.error(error);
         }
@@ -93,11 +96,13 @@ export default function MisPedidosVendedor() {
 
             <div className="pedidos-container">
                 <h3 className="pedidos-title">📝 Mis pedidos como vendedor</h3>
-<div style={{ textAlign: "center", marginBottom: "20px" }}>
-    <button className="btn-pdf" onClick={handleDescargarExcel}>
-        Descargar Excel de todos los productos
-    </button>
-</div>
+
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <button className="btn-pdf" onClick={handleDescargarExcel}>
+                        Descargar Excel de todos los productos
+                    </button>
+                </div>
+
                 {pedidos.length === 0 ? (
                     <p className="no-pedidos-text">No tienes pedidos registrados.</p>
                 ) : (
@@ -153,7 +158,6 @@ export default function MisPedidosVendedor() {
                                                     )}
                                                 </div>
                                             ))}
-                                            
                                         </div>
                                     )}
                                 </div>
