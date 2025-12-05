@@ -68,13 +68,18 @@
 .modal-content {
   background: white;
   padding: 25px;
-  width: 360px;
+  width: 400px;
   max-height: 80vh;
   overflow-y: auto;
+  /* Permite scroll si es demasiado alto */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.modal-content label {
+  font-weight: 500;
 }
 
 .modal-content input,
@@ -83,6 +88,13 @@
   border: 1px solid #d1d1d1;
   border-radius: 6px;
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-content textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .modal-content input:focus,
@@ -125,6 +137,7 @@
 .btn-cancel:hover {
   background: #505050;
 }
+
 
 /* FILTROS */
 .filtros-usuarios {
