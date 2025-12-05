@@ -20,7 +20,7 @@ export default function AdminProductos() {
     productStock: "",
     categoryId: "",
     vendedorId: "",
-    imageUrl: "", 
+    imageUrl: "",
   });
 
   // Normaliza datos del backend
@@ -32,15 +32,15 @@ export default function AdminProductos() {
     productStock: p.productStock,
     categoryId: p.categoryId,
     vendedorId: p.vendedorId,
-    imageUrl: p.productImage
-      ? p.productImage 
-      : null,
+    imageUrl: p.productImage ? p.productImage : null,
   });
 
   const fetchProductos = async () => {
     setCargando(true);
     try {
-      const response = await fetch("https://greencart-backend-085d.onrender.com/productos/all");
+      const response = await fetch(
+        "https://greencart-backend-085d.onrender.com/productos/all"
+      );
       const data = await response.json();
       setProductos(data.map(normalizarProducto));
     } catch {
@@ -59,7 +59,9 @@ export default function AdminProductos() {
 
     setCargando(true);
     try {
-      const res = await fetch(`https://greencart-backend-085d.onrender.com/productos/${idBuscar}`);
+      const res = await fetch(
+        `https://greencart-backend-085d.onrender.com/productos/${idBuscar}`
+      );
       const data = await res.json();
 
       if (!data || data.error) {
@@ -168,7 +170,7 @@ export default function AdminProductos() {
       productStock: p.productStock,
       categoryId: p.categoryId,
       vendedorId: p.vendedorId,
-      imageUrl: p.imageUrl || "", // Usar imageUrl en lugar de `image`
+      imageUrl: p.imageUrl || "",
     });
 
     setEditModal(true);
@@ -184,14 +186,7 @@ export default function AdminProductos() {
     formData.append("productStock", editProduct.productStock);
     formData.append("categoryId", editProduct.categoryId);
     formData.append("vendedorId", editProduct.vendedorId);
-
-    // Si es una URL válida, la agregamos
-    if (editProduct.imageUrl && !editProduct.imageUrl.startsWith('http')) {
-      formData.append("imageUrl", editProduct.imageUrl);
-    } else if (editProduct.imageUrl) {
-      // Si es una URL válida
-      formData.append("imageUrl", editProduct.imageUrl);
-    }
+    if (editProduct.imageUrl) formData.append("imageUrl", editProduct.imageUrl);
 
     try {
       const res = await fetch(
@@ -267,7 +262,7 @@ export default function AdminProductos() {
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Stock</th>
-                                <th>Categoría</th>
+                <th>Categoría</th>
                 <th>Vendedor</th>
                 <th>Imagen</th>
                 <th>Acciones</th>
@@ -313,6 +308,7 @@ export default function AdminProductos() {
           </table>
         )}
 
+        {/* Modal */}
         {editModal && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -384,13 +380,15 @@ export default function AdminProductos() {
                 placeholder="URL de la imagen"
               />
 
-              <button className="btn-save" onClick={guardarCambios}>
-                Guardar
-              </button>
+              <div className="modal-buttons">
+                <button className="btn-save" onClick={guardarCambios}>
+                  Guardar
+                </button>
 
-              <button className="btn-cancel" onClick={() => setEditModal(false)}>
-                Cancelar
-              </button>
+                <button className="btn-cancel" onClick={() => setEditModal(false)}>
+                  Cancelar
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -398,4 +396,3 @@ export default function AdminProductos() {
     </div>
   );
 }
-
