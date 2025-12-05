@@ -14,7 +14,7 @@ export default function AdminVentas() {
   const normalizarVenta = (v) => ({
     id: v.orderId,
     comprador: v.buyerId,
-    fecha: v.date ? new Date(v.date).toISOString().split("T")[0] : "N/A",
+    fecha: v.date ? new Date(v.date).toLocaleString() : "N/A",
     total: v.total?.toFixed(2) || "0.00",
     estado: v.status || "N/A",
   });
